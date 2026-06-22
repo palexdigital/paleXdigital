@@ -39,6 +39,7 @@
       display: flex;
       justify-content: center;
       padding: 2rem 1.25rem 2.5rem;
+      position: relative;
     }
     .page {
       width: 100%;
@@ -48,6 +49,33 @@
       align-items: center;
       gap: 2rem;
     }
+    
+    /* Client Portal Top Right Placement */
+    .px-client-portal {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      z-index: 50;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .px-client-portal:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+    .px-portal-text {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #a595e8;
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
     /* Fade in on load */
     .fade-in {
       animation: fadeIn 0.7s ease-out both;
@@ -129,7 +157,11 @@
     /* Responsive */
     @media (max-width: 480px) {
       body {
-        padding: 1.5rem 1rem 2rem;
+        padding: 4.5rem 1rem 2rem; /* Adjusted to give top-clearance for absolute link */
+      }
+      .px-client-portal {
+        top: 16px;
+        right: 16px;
       }
       .page {
         gap: 1.5rem;
@@ -275,6 +307,20 @@
   </style>
 </head>
 <body>
+
+  <a href="../clientportal/" class="px-client-portal" aria-label="Go to client portal">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32" height="32" fill="none" stroke="#a595e8" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="316" cy="196" r="44" />
+      <path d="M372 196a56 56 0 00-112 0 56 56 0 00112 0z" stroke-dasharray="200 40" />
+      <path d="M316 112v-24M316 304v-24M232 196h-24M400 196h-24M256 136l-17-17M376 256l-17-17M256 256l-17 17M376 136l-17 17" />
+      <circle cx="156" cy="316" r="28" />
+      <path d="M156 264v-16M156 384v-16M104 316h-16M208 316h-16M119 279l-11-11M193 353l-11-11M119 353l-11 11M193 279l-11 11" />
+      <rect x="76" y="416" width="360" height="36" rx="18" />
+      <path d="M106 434h180M116 416l20 36M156 416l20 36M196 416l20 36M236 416l20 36M276 416l20 36" opacity="0.85" />
+    </svg>
+    <span class="px-portal-text">Client Portal</span>
+  </a>
+
   <main class="page fade-in">
     <header class="profile">
       <div class="loader-wrapper">
