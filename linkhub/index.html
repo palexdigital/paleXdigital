@@ -61,6 +61,9 @@
       text-decoration: none;
       z-index: 50;
       transition: transform 0.2s ease, opacity 0.2s ease;
+      cursor: pointer;
+      background: none;
+      border: none;
     }
     .px-client-portal:hover {
       transform: scale(1.05);
@@ -304,11 +307,105 @@
         transform: translate(var(--dist), var(--dist)) rotate(var(--angle));
       }
     }
+
+    /* --- ADDED CLIENT PORTAL MODAL INTEGRATION OVERLAY --- */
+    .portal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+    .portal-overlay.active {
+      display: flex;
+    }
+    .card {
+      background-color: #1A1A1A;
+      border: 1px solid #2D2D2D;
+      border-radius: 16px;
+      padding: 40px 30px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+      max-width: 440px;
+      width: 100%;
+      position: relative;
+    }
+    .close-portal-btn {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 22px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .close-portal-btn:hover {
+      color: #ffffff;
+    }
+    .text-purple-gradient { 
+      background: linear-gradient(135deg, #8B5CF6, #A855F7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .form-group-portal {
+      margin-bottom: 24px;
+      text-align: left;
+    }
+    .form-group-portal label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .form-group-portal input {
+      width: 100%;
+      background-color: #121212;
+      border: 1px solid #2D2D2D;
+      color: #ffffff;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.2s ease;
+    }
+    .form-group-portal input:focus {
+      border-color: #8B5CF6;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    }
+    .btn-portal-submit {
+      display: inline-block;
+      width: 100%;
+      background-color: #8B5CF6;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: center;
+    }
+    .btn-portal-submit:hover {
+      background-color: #A855F7;
+    }
   </style>
 </head>
 <body>
 
-  <a href="../clientportal/" class="px-client-portal" aria-label="Go to client portal">
+  <button id="openPortalBtn" class="px-client-portal" aria-label="Open client portal">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32" height="32" fill="none" stroke="#a595e8" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="316" cy="196" r="44" />
       <path d="M372 196a56 56 0 00-112 0 56 56 0 00112 0z" stroke-dasharray="200 40" />
@@ -319,7 +416,7 @@
       <path d="M106 434h180M116 416l20 36M156 416l20 36M196 416l20 36M236 416l20 36M276 416l20 36" opacity="0.85" />
     </svg>
     <span class="px-portal-text">Client Portal</span>
-  </a>
+  </button>
 
   <main class="page fade-in">
     <header class="profile">
@@ -353,7 +450,38 @@
       <p>&copy; <span id="year"></span> paléX. All rights reserved.</p>
     </footer>
   </main>
+
+  <div id="portalOverlay" class="portal-overlay">
+    <div class="card">
+      <button id="closePortalBtn" class="close-portal-btn" aria-label="Close Portal">&times;</button>
+      
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h1 class="text-purple-gradient" style="font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.025em;">paléX Client Portal</h1>
+        <h2 style="font-size: 19px; margin-bottom: 10px; font-weight: 700; letter-spacing: -0.025em;">Track Your Project Progress</h2>
+        <p style="font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, 0.65);">Securely monitor your project anytime using your Proposal Number code and password.</p>
+      </div>
+
+      <div id="error-message" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid #EF4444; color: #FCA5A5; padding: 12px; border-radius: 6px; font-size: 13px; text-align: center; margin-bottom: 15px;"></div>
+
+      <form id="login-form">
+        <div class="form-group-portal">
+          <label>Proposal Number</label>
+          <input type="text" id="tracking-code" placeholder="e.g., PROP-2026-01" required>
+        </div>
+        <div class="form-group-portal">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-portal-submit" style="margin-top: 5px; margin-bottom: 20px;">View Project</button>
+      </form>
+      
+      <div style="text-align: center;">
+        <a href="admin.html" style="font-size: 13px; text-decoration: none; color: rgba(255, 255, 255, 0.65);">Staff Admin Login</a>
+      </div>
+    </div>
+  </div>
   
+  <script src="projects-data.js"></script>
   <script>
     // Set dynamic year in footer
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -373,6 +501,44 @@
     }
 
     setInterval(createStar, 300);
+
+    // --- CLIENT PORTAL POPUP & REDIRECT SCRIPTING HANDLERS ---
+    const overlay = document.getElementById('portalOverlay');
+    const openBtn = document.getElementById('openPortalBtn');
+    const closeBtn = document.getElementById('closePortalBtn');
+
+    openBtn.addEventListener('click', () => overlay.classList.add('active'));
+    closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+
+    // Close when clicking empty space outside the card box area context
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.classList.remove('active');
+    });
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const inputCode = document.getElementById('tracking-code').value.trim();
+      const inputPass = document.getElementById('password').value.trim();
+      const errorDiv = document.getElementById('error-message');
+
+      if (typeof PROJECTS_DATABASE === 'undefined') {
+        errorDiv.innerText = "Database File Missing: Make sure projects-data.js exists in this same folder.";
+        errorDiv.style.display = "block";
+        return;
+      }
+
+      const foundProject = PROJECTS_DATABASE.find(p => p.trackingCode === inputCode);
+
+      if (foundProject && foundProject.password === inputPass) {
+        errorDiv.style.display = "none";
+        localStorage.setItem('activeProjectCode', inputCode);
+        window.location.href = './dashboard.html';
+      } else {
+        errorDiv.innerText = "Invalid proposal number or incorrect password.";
+        errorDiv.style.display = "block";
+      }
+    });
   </script>
 </body>
 </html>
