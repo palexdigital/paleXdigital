@@ -1,85 +1,12 @@
 <!DOCTYPE html>
-<!--
-  paléXdigital | index.html
-  -------------------------------------------------------------------------
-  SECURITY AUDIT LOG
-  -------------------------------------------------------------------------
-  [FIXED]  CLICKJACKING         - CSP frame-ancestors 'self' added (meta)
-  [FIXED]  MIXED CONTENT        - upgrade-insecure-requests in CSP
-  [FIXED]  MIME SNIFFING        - X-Content-Type-Options via meta
-  [FIXED]  XSS (future-safe)    - spark styles use setProperty(), not cssText
-  [FIXED]  OPEN REDIRECT        - redirect target validated via allowlist fn
-  [FIXED]  TIMER LEAK           - all setTimeout IDs stored; cleared on pageshow
-  [FIXED]  BUTTON FLOOD         - click locked after first press (isProcessing guard)
-  [FIXED]  PASSIVE LISTENERS    - mousemove and resize use { passive: true }
-  [FIXED]  REFERRER LEAKAGE     - meta referrer strict-origin
-  [FIXED]  CACHE POISONING      - nosniff + cache-control meta
-  [FIXED]  FONT CDN             - crossorigin on preconnect; self-host for full SRI (see note A)
-  [PASS]   HARDCODED CREDS      - none found
-  [PASS]   SENSITIVE DATA       - no secrets in frontend
-  [PASS]   SQL INJECTION        - no database calls in frontend
-  [PASS]   CSRF                 - no form POST; server must set SameSite=Strict
-  [PASS]   FILE UPLOAD          - not present in this page
-  [PASS]   DEPENDENCIES         - Google Fonts only; no vulnerable npm packages
-  [PASS]   AUTH / SESSION       - not present in this page; linkhub/ must be server-protected
-  [PASS]   INPUT VALIDATION     - no user inputs in this page
-  [PASS]   COOKIE SECURITY      - no cookies set; server must use Secure; HttpOnly; SameSite=Strict
-  -------------------------------------------------------------------------
-  SERVER-SIDE REQUIREMENTS (cannot be enforced in HTML alone)
-  -------------------------------------------------------------------------
-  Your web server or CDN must send all of the following HTTP response headers:
 
-    Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-    X-Frame-Options: DENY
-    X-Content-Type-Options: nosniff
-    Referrer-Policy: strict-origin
-    Permissions-Policy: geolocation=(), microphone=(), camera=()
-    Content-Security-Policy:
-      default-src 'self';
-      script-src  'self';
-      style-src   'self' https://fonts.googleapis.com;
-      font-src    'self' https://fonts.gstatic.com;
-      img-src     'self' data:;
-      frame-ancestors 'none';
-      upgrade-insecure-requests;
-      block-all-mixed-content
-
-  Rate-limit  linkhub/  to 60 requests per IP per minute (nginx limit_req or Cloudflare)
-  Protect     linkhub/  behind auth middleware - it must not be publicly enumerable
-  Enable      SSL/TLS 1.2 or higher with HSTS preload
-  Configure   daily log rotation and anomaly alerts for brute-force and unusual traffic spikes
-
-  NOTE A - SELF-HOSTING FONTS (recommended for full SRI compliance)
-  Download Inter and Playfair Display from Google Fonts and serve from /fonts/.
-  Replace the link tags below with @font-face rules pointing to your own origin
-  and remove the preconnect to fonts.googleapis.com.
-
-  SCALE NOTES (1,000,000 concurrent users)
-  -------------------------------------------------------------------------
-  - All animation driven by requestAnimationFrame; zero setInterval timers
-  - Star array garbage-collected every frame via alive[] filter
-  - Canvas resized via ResizeObserver (passive, no layout thrash)
-  - Button locked to exactly one processing cycle (isProcessing flag)
-  - All event listeners use { passive: true } where applicable
-  - No blocking network calls on this page; pure static asset
-  - Redirect target (linkhub/) must be behind a CDN with edge caching and rate-limiting
--->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#000000" />
 
-  <!--
-    SECURITY META HEADERS
-    These provide a defence-in-depth layer in the browser.
-    They do not replace server-sent HTTP headers (see requirements above).
 
-    NOTE: script-src includes 'unsafe-inline' because this is a single-file page
-    with an inline script block. For maximum security on a server deployment,
-    move the JS to an external file (e.g. /assets/main.js) and remove
-    'unsafe-inline' from script-src so only same-origin scripts are allowed.
-  -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'self'; upgrade-insecure-requests; block-all-mixed-content" />
 
@@ -554,13 +481,7 @@
       window.location.href = dest;
     }
 
-    /*
-      TIMER REGISTRY
-      All setTimeout calls go through safeTimeout() so their IDs
-      are tracked. clearAllTimers() cancels every pending timer,
-      preventing orphaned chains from firing against a reset UI
-      when the user presses the browser back button.
-    */
+    
     var timerIds = [];
 
     function safeTimeout(fn, ms) {
@@ -700,12 +621,7 @@
     var animatedCheck   = document.getElementById('animatedCheck');
     var grantedText     = document.getElementById('grantedText');
 
-    /*
-      FLOOD PROTECTION
-      isProcessing prevents any re-entrant click from spawning a second
-      redirect chain. This is the client-side gate; the server-side
-      rate limiter on linkhub/ is the authoritative enforcement layer.
-    */
+   
     var isProcessing = false;
 
     function resetUI() {
@@ -754,21 +670,11 @@
       }, 3000);
     });
 
-    /*
-      pageshow fires on back/forward cache restore.
-      Clear all pending timers and reset the UI so back-button
-      navigation never leaves orphaned timer chains running.
-    */
+   
     window.addEventListener('pageshow', function () {
       resetUI();
     });
 
-    /*
-      SECURITY: spark particle styles use setProperty() rather than
-      cssText string concatenation. This is future-safe against
-      accidental interpolation of variable data into style strings.
-      mousemove is marked passive for scroll-jank-free performance.
-    */
     btn.addEventListener('mousemove', function (e) {
       if (!isProcessing && Math.random() > 0.88) {
         var wRect = btnWrap.getBoundingClientRect();
