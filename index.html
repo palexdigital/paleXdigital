@@ -50,7 +50,7 @@
       width: 100%;
       height: 100%;
       background: #000 url('do it too.jpg') no-repeat center center;
-      background-size: cover;
+      background-size: 100% 100%;
       background-attachment: fixed;
       overflow: hidden;
     }
@@ -60,7 +60,7 @@
       width: 100%;
       height: 100vh;
       background: url('do it too.jpg') no-repeat center center;
-      background-size: cover;
+      background-size: 100% 100%;
       overflow: hidden;
     }
 
@@ -442,12 +442,6 @@
     */
     var ALLOWED_DESTINATIONS = Object.freeze({ 'linkhub/': true });
 
-    /*
-      safeRedirect(dest)
-      Validates dest against ALLOWED_DESTINATIONS before navigating.
-      Silently blocks and logs any unlisted target without exposing
-      details in the UI.
-    */
     var timerIds = [];
 
     function safeTimeout(fn, ms) {
