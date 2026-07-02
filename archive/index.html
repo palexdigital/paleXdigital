@@ -22,6 +22,7 @@
     color: var(--accent-cream);
     line-height: 1.6;
     padding: 0;
+    position: relative;
   }
 
   /* Header Section */
@@ -29,6 +30,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 60px 24px 20px;
+    position: relative;
   }
 
   .nav-mini {
@@ -39,6 +41,7 @@
     letter-spacing: 0.15em;
     color: var(--text-muted);
     margin-bottom: 40px;
+    padding-right: 40px;
   }
 
   .main-title {
@@ -49,11 +52,78 @@
     letter-spacing: -0.03em;
   }
 
+  /* Menu Icon */
+  .menu-icon {
+    position: absolute;
+    top: 60px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  .menu-icon span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background-color: var(--accent-cream);
+    transition: 0.3s;
+  }
+
+  /* Dropdown Folder Menu */
+  .menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 90px;
+    right: 24px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    min-width: 200px;
+    z-index: 1000;
+  }
+
+  .menu-dropdown a {
+    display: block;
+    color: var(--accent-cream);
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(243, 241, 235, 0.05);
+  }
+
+  .menu-dropdown a:last-child {
+    border-bottom: none;
+  }
+
+  .menu-dropdown a:hover {
+    color: var(--text-muted);
+  }
+
   /* Layout Container */
   .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px 24px 80px;
+  }
+
+  /* Side-by-Side Sections Container */
+  .sections-side-by-side {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  @media (min-width: 992px) {
+    .sections-side-by-side {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   /* Section Titles */
@@ -67,7 +137,7 @@
     letter-spacing: 0.02em;
   }
 
-  /* Project Stack (One after another vertically) */
+  /* Project Stack */
   .projects-stack {
     display: flex;
     flex-direction: column;
@@ -224,135 +294,131 @@
       <div>Collection Of Projects by paléXdigital</div>
     </div>
     <h1 class="main-title">PaléX<br>Archive</h1>
+    
+    <div class="menu-icon" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="menu-dropdown" id="menuDropdown">
+      <a href="#official-section" onclick="toggleMenu()">Official</a>
+      <a href="#demo-section" onclick="toggleMenu()">Demo</a>
+    </div>
   </header>
 
   <main class="container">
     
-    <section>
-      <h2 class="section-headline">Projects</h2>
-      <div class="projects-stack">
+    <div class="sections-side-by-side">
+      <section id="official-section">
+        <h2 class="section-headline">Official</h2>
+        <div class="projects-stack">
 
-        <a class="project-card" href="https://palexdigital.github.io/The-Nail-Technique/">
-          <div class="project-logo-frame">
-            <img src="image09.jpg" alt="The-Nail-Technique Logo">
-          </div>
-          <div class="project-content">
-            <div class="project-meta"> E-Commerce Store</div>
-            <div class="project-title"> (DEMO-NOT OFFICIAL)The Nail Technique </div>
-            <div class="project-desc">Known for exceptional nail artistry, professionalism and quality service.The Nail Technique also offer expert nail classes to help aspiring technicians build successful careers.</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        </a>
-       
-        <a class="project-card" href="https://palexdigital.github.io/DR.-SIFISO-NKOSI-Aesthetic-Clinic/">
-          <div class="project-logo-frame">
-            <img src="image01.jpg" alt="web Logo">
-          </div>
-          <div class="project-content">
-            <div class="project-meta">Basic Business Website</div>
-            <div class="project-title"> (DEMO-NOT OFFICIAL) Dr Sifiso Nkosi Aesthetic Clinic</div>
-            <div class="project-desc">Dr Sifiso Nkosi Aesthetic is a medical aesthetics clinic located in Die Wilgers, Pretoria, Gauteng, South Africa.</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        </a>
+         <a class="project-card" href="https://palexdigital.github.io/pXAPPSTORE/">
+            <div class="project-logo-frame">
+              <img src="image05.jpg" alt="pXAPPSTORE Logo">
+            </div>
+            <div class="project-content">
+              <div class="project-meta">/ Basic Business Website</div>
+              <div class="project-title">pXAPPSTORE</div>
+              <div class="project-desc">PXAppStore is a mobile app marketplace that provides users with access to a wide range of applications, offering a convenient platform to discover and download mobile apps.</div>
+            </div>
+            <div class="project-action">&rarr;</div>
+          </a>
 
-       <a class="project-card" href="https://palexdigital.github.io/Maison-de-Luxe/">
-          <div class="project-logo-frame">
-            <img src="image02.jpg" alt="Maison-de-Luxe">
-          </div>
-          <div class="project-content">
-            <div class="project-meta"> E-Commerce Store</div>
-            <div class="project-title"> (DEMO-NOT OFFICIAL) Maison de Luxe</div>
-            <div class="project-desc">Maison de Luxe is a thrift store specializing in authentic pre-loved luxury purses and bags. Known for quality and authenticity, it has built a strong following on Instagram.</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        
-        <a class="project-card" href="https://palexdigital.github.io/RICHENDOR-GENERAL-TRADING/">
-          <div class="project-logo-frame">
-            <img src="image03.jpg" alt="Richendor Logo">
-          </div>
-          <div class="project-content">
-            <div class="project-meta">E-Commerce</div>
-            <div class="project-title"> (DEMO-NOT OFFICIAL) Richendor General Trading Online Store</div>
-            <div class="project-desc">Quality Apple devices, accessories, and everyday tech essentials.</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        </a>
+        </div>
+      </section>
 
-        <a class="project-card" href="https://palexdigital.github.io/Vogue-Fabrics/">
-          <div class="project-logo-frame">
-            <img src="image04.jpg" alt="Vogue logo">
-          </div>
-          <div class="project-content">
-            <div class="project-meta"> E-Commerce Store</div>
-            <div class="project-title"> (DEMO-NOT OFFICIAL) Vogue Fabrics</div>
-            <div class="project-desc">Vogue Fabrics is a renowned Nigerian fashion and textile brand offering premium fabrics and stylish dresses. Known for quality and elegance, the company serves customers across Nigeria and worldwide.</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        </a>
+      <section id="demo-section">
+        <h2 class="section-headline">Demo</h2>
+        <div class="projects-stack">
 
-       <a class="project-card" href="https://palexdigital.github.io/pXAPPSTORE/">
-          <div class="project-logo-frame">
-            <img src="image05.jpg" alt="pXAPPSTORE Logo">
-          </div>
-          <div class="project-content">
-            <div class="project-meta">/ Basic Business Website</div>
-            <div class="project-title">pXAPPSTORE</div>
-            <div class="project-desc">PXAppStore is a mobile app marketplace that provides users with access to a wide range of applications, offering a convenient platform to discover and download mobile apps.</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        </a>
+          <a class="project-card" href="https://palexdigital.github.io/The-Nail-Technique/">
+            <div class="project-logo-frame">
+              <img src="image09.jpg" alt="The-Nail-Technique Logo">
+            </div>
+            <div class="project-content">
+              <div class="project-meta"> E-Commerce Store</div>
+              <div class="project-title">The Nail Technique </div>
+              <div class="project-desc">Known for exceptional nail artistry, professionalism and quality service.The Nail Technique also offer expert nail classes to help aspiring technicians build successful careers.</div>
+            </div>
+            <div class="project-action">&rarr;</div>
+          </a>
+         
+          <a class="project-card" href="https://palexdigital.github.io/DR.-SIFISO-NKOSI-Aesthetic-Clinic/">
+            <div class="project-logo-frame">
+              <img src="image01.jpg" alt="web Logo">
+            </div>
+            <div class="project-content">
+              <div class="project-meta">Basic Business Website</div>
+              <div class="project-title"> Dr Sifiso Nkosi Aesthetic Clinic</div>
+              <div class="project-desc">Dr Sifiso Nkosi Aesthetic is a medical aesthetics clinic located in Die Wilgers, Pretoria, Gauteng, South Africa.</div>
+            </div>
+            <div class="project-action">&rarr;</div>
+          </a>
 
-       <a class="project-card" href="https://palexdigital.github.io/hoperite-web/">
-          <div class="project-logo-frame">
-            <img src="image06.jpg" alt="Hoperite Logo">
-          </div>
-          <div class="project-content">
-            <div class="project-meta"> / E-Commerce Store</div>
-            <div class="project-title"> (DEMO-NOT OFFICIAL) Hoperite Fast Food</div>
-            <div class="project-desc">Hoperite Fast Food is a fast-food spot in Pretoria serving tasty local South African meals and quick, home-style dishes.</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        </a>
+         <a class="project-card" href="https://palexdigital.github.io/Maison-de-Luxe/">
+            <div class="project-logo-frame">
+              <img src="image02.jpg" alt="Maison-de-Luxe">
+            </div>
+            <div class="project-content">
+              <div class="project-meta"> E-Commerce Store</div>
+              <div class="project-title"> Maison de Luxe</div>
+              <div class="project-desc">Maison de Luxe is a thrift store specializing in authentic pre-loved luxury purses and bags. Known for quality and authenticity, it has built a strong following on Instagram.</div>
+            </div>
+            <div class="project-action">&rarr;</div>
+          </a>
+          
+          <a class="project-card" href="https://palexdigital.github.io/RICHENDOR-GENERAL-TRADING/">
+            <div class="project-logo-frame">
+              <img src="image03.jpg" alt="Richendor Logo">
+            </div>
+            <div class="project-content">
+              <div class="project-meta">E-Commerce</div>
+              <div class="project-title"> Richendor General Trading Online Store</div>
+              <div class="project-desc">Quality Apple devices, accessories, and everyday tech essentials.</div>
+            </div>
+            <div class="project-action">&rarr;</div>
+          </a>
 
-        <a class="project-card" href="https://palexdigital.github.io/stevenmlazi/">
-          <div class="project-logo-frame">
-            <img src="image07.jpg" alt="stevenmlazi Logo">
-          </div>
-          <div class="project-content">
-            <div class="project-meta"> / Portfolio Website</div>
-            <div class="project-title"> (DEMO-NOT OFFICIAL) Steven Mlazi Portfolio </div>
-            <div class="project-desc">Steven Mlazi is a lighting and stage designer and multi-instrumentalist with a creative portfolio in live productions and music.</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        </a>
+          <a class="project-card" href="https://palexdigital.github.io/Vogue-Fabrics/">
+            <div class="project-logo-frame">
+              <img src="image04.jpg" alt="Vogue logo">
+            </div>
+            <div class="project-content">
+              <div class="project-meta"> E-Commerce Store</div>
+              <div class="project-title"> Vogue Fabrics</div>
+              <div class="project-desc">Vogue Fabrics is a renowned Nigerian fashion and textile brand offering premium fabrics and stylish dresses. Known for quality and elegance, the company serves customers across Nigeria and worldwide.</div>
+            </div>
+            <div class="project-action">&rarr;</div>
+          </a>
 
-        <a class="project-card" href="https://palexdigital.github.io/ncosmeticsbynaquueda/">
-          <div class="project-logo-frame">
-            <img src="image08.jpg" alt="ncosmeticsbynaquueda Logo">
-          </div>
-          <div class="project-content">
-            <div class="project-meta"> / E-Commerce Store</div>
-            <div class="project-title"> (DEMO-NOT OFFICIAL)N Cosmetics By Naquueda </div>
-            <div class="project-desc">N Cosmetics by Naquueda is a beauty brand specializing in lip glosses, offering glossy, high-quality products designed to enhance natural beauty.</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        </a>
+          <a class="project-card" href="https://palexdigital.github.io/ncosmeticsbynaquueda/">
+            <div class="project-logo-frame">
+              <img src="image08.jpg" alt="ncosmeticsbynaquueda Logo">
+            </div>
+            <div class="project-content">
+              <div class="project-meta"> / E-Commerce Store</div>
+              <div class="project-title">N Cosmetics By Naquueda </div>
+              <div class="project-desc">N Cosmetics by Naquueda is a beauty brand specializing in lip glosses, offering glossy, high-quality products designed to enhance natural beauty.</div>
+            </div>
+            <div class="project-action">&rarr;</div>
+          </a>
 
-        <a class="project-card" href="https://xxxxxxxxxxx">
-          <div class="project-logo-frame">
-            <img src="image00.jpg" alt="xxxxxxxxxxx Logo">
-          </div>
-          <div class="project-content">
-            <div class="project-meta"> xxxxxxxxxxx</div>
-            <div class="project-title"> xxxxxxxxxxx </div>
-            <div class="project-desc">xxxxxxxxxxx</div>
-          </div>
-          <div class="project-action">&rarr;</div>
-        </a>
+          <a class="project-card" href="https://xxxxxxxxxxx">
+            <div class="project-logo-frame">
+              <img src="image00.jpg" alt="xxxxxxxxxxx Logo">
+            </div>
+            <div class="project-content">
+              <div class="project-meta"> xxxxxxxxxxx</div>
+              <div class="project-title"> xxxxxxxxxxx </div>
+              <div class="project-desc">xxxxxxxxxxx</div>
+            </div>
+            <div class="project-action">&rarr;</div>
+          </a>
 
-      </div>
-    </section>
+        </div>
+      </section>
+    </div>
 
     <section>
       <h2 class="section-headline">Contact Us</h2>
@@ -363,7 +429,7 @@
           <span>&nearr;</span>
         </a>
 
-        <a class="contact-card" href="mailto:palexdigital@gmail.com">
+        <a class="contact-card" href="mailto:palexonline@gmail.com">
           <span class="contact-title">Email Us</span>
           <span>&nearr;</span>
         </a>
@@ -382,6 +448,17 @@
       <span>LICENSING</span>
     </div>
   </footer>
+
+  <script>
+    function toggleMenu() {
+      var dropdown = document.getElementById("menuDropdown");
+      if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+      } else {
+        dropdown.style.display = "block";
+      }
+    }
+  </script>
 
 </body>
 </html>
