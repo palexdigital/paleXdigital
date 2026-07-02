@@ -6,7 +6,7 @@
   <meta name="description" content="paléXlinkhub — All your paléX links in one place.">
   <title>paléXlinkhub | paléX</title>
   <style>
-    /* paléXlinkhub — minimal Linktree-style page */
+    /* --- Reset & Global Variables --- */
     *,
     *::before,
     *::after {
@@ -15,15 +15,15 @@
       padding: 0;
     }
     :root {
-      --bg: #0a0a0f;
+      --bg: #000000;
       --accent: #7c3aed;
       --accent-hover: #8b5cf6;
       --accent-glow: rgba(124, 58, 237, 0.35);
       --text: #ffffff;
       --text-muted: rgba(255, 255, 255, 0.65);
       --button-bg: rgba(255, 255, 255, 0.06);
-      --button-border: rgba(124, 58, 237, 0.45);
-      --max-width: 420px;
+      --button-border: #7c3aed; /* Updated to purple border for each grid card */
+      --max-width: 1400px;
       --radius: 12px;
     }
     html {
@@ -32,51 +32,55 @@
     }
     body {
       min-height: 100dvh;
-      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      font-family: Graphik, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.5;
-      display: flex;
-      justify-content: center;
-      padding: 2rem 1.25rem 2.5rem;
-      position: relative;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
-    .page {
+
+    /* --- Navigation Bar --- */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 50px;
+      background-color: #000000;
+      position: fixed;
       width: 100%;
-      max-width: var(--max-width);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
+      top: 0;
+      z-index: 1000;
     }
-    
-    /* Client Portal Top Right Placement */
-    .px-client-portal {
-      position: absolute;
-      top: 24px;
-      right: 32px;
+
+    .logo-img {
+      height: 32px;
+      object-fit: contain;
+    }
+
+    nav {
       display: flex;
-      flex-direction: column;
+      gap: 30px;
       align-items: center;
+    }
+
+    nav a {
+      font-size: 14px;
+      font-weight: 500;
+      color: #e6e6e6;
       text-decoration: none;
-      z-index: 50;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-      cursor: pointer;
-      background: none;
-      border: none;
+      transition: color 0.2s ease;
     }
-    .px-client-portal:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
+
+    nav a:hover {
+      color: var(--accent);
     }
-    .px-portal-text {
-      font-family: "Segoe UI", system-ui, sans-serif;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: #a595e8;
-      margin-top: 6px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+
+    /* --- Main Layout Wrapper --- */
+    .wrapper {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 140px 50px 60px 50px;
     }
 
     /* Fade in on load */
@@ -93,120 +97,50 @@
         transform: translateY(0);
       }
     }
-    /* Header / profile */
-    .profile {
+
+    /* --- Hero Section --- */
+    .hero-section {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 0.75rem;
-      width: 100%;
-    }
-    /* Link buttons */
-    .links {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.875rem;
-      width: 100%;
-    }
-    .link-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      max-width: var(--max-width);
-      padding: 0.95rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text);
-      text-decoration: none;
-      text-align: center;
-      background: var(--button-bg);
-      border: 1px solid var(--button-border);
-      border-radius: var(--radius);
-      transition:
-        background-color 0.25s ease,
-        border-color 0.25s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-      cursor: pointer;
-    }
-    .link-btn:hover,
-    .link-btn:focus-visible {
-      background-color: rgba(124, 58, 237, 0.18);
-      border-color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px var(--accent-glow);
-      outline: none;
-    }
-    .link-btn:active {
-      transform: translateY(0);
-    }
-    .link-btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-    }
-    /* Footer */
-    .footer {
-      margin-top: auto;
-      padding-top: 1rem;
-      text-align: center;
-    }
-    .footer p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-    /* Responsive */
-    @media (max-width: 480px) {
-      body {
-        padding: 4.5rem 1rem 2rem; /* Adjusted to give top-clearance for absolute link */
-      }
-      .px-client-portal {
-        top: 16px;
-        right: 16px;
-      }
-      .page {
-        gap: 1.5rem;
-      }
-      .link-btn {
-        padding: 0.875rem 1.25rem;
-        font-size: 0.95rem;
-      }
-    }
-    @media (min-width: 768px) {
-      .link-btn {
-        font-size: 1.05rem;
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .fade-in {
-        animation: none;
-      }
-      .link-btn {
-        transition: background-color 0.15s ease, border-color 0.15s ease;
-      }
-      .link-btn:hover,
-      .link-btn:focus-visible {
-        transform: none;
-      }
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 60px;
+      border-bottom: 1px solid #222;
+      padding-bottom: 40px;
     }
 
-    /* Loader */
+    /* Hero Centerpiece Circle Glow Configuration */
+    .hero-centerpiece {
+      position: relative;
+      display: inline-block;
+      padding: 20px;
+    }
+
+    .hero-glow-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, var(--accent) 0%, rgba(124, 58, 237, 0) 70%);
+      border-radius: 50%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Loader Wrapper styling acting as text effect */
     .loader-wrapper {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 180px;
-      height: 180px;
-      font-family: "Inter", sans-serif;
-      font-size: 1.2em;
-      font-weight: 300;
+      width: auto;
+      height: 100px;
+      font-size: 3.5rem;
+      font-weight: 800;
       color: white;
-      border-radius: 50%;
-      background-color: transparent;
       user-select: none;
+      z-index: 2;
     }
 
     .loader {
@@ -214,11 +148,12 @@
       top: 0;
       left: 0;
       width: 100%;
-      aspect-ratio: 1 / 1;
+      height: 100%;
       border-radius: 50%;
       background-color: transparent;
       animation: loader-rotate 2s linear infinite;
       z-index: 0;
+      pointer-events: none;
     }
 
     @keyframes loader-rotate {
@@ -251,8 +186,6 @@
       transform: translateY(0);
       animation: loader-letter-anim 2s infinite;
       z-index: 1;
-      border-radius: 50ch;
-      border: none;
     }
 
     .loader-letter:nth-child(1) { animation-delay: 0s; }
@@ -265,23 +198,220 @@
     .loader-letter:nth-child(8) { animation-delay: 0.7s; }
     .loader-letter:nth-child(9) { animation-delay: 0.8s; }
     .loader-letter:nth-child(10) { animation-delay: 0.9s; }
+    .loader-letter:nth-child(11) { animation-delay: 1s; }
+    .loader-letter:nth-child(12) { animation-delay: 1.1s; }
 
     @keyframes loader-letter-anim {
-      0%,
-      100% {
-        opacity: 0.4;
-        transform: translateY(0);
-      }
-      20% {
-        opacity: 1;
-        transform: scale(1.15);
-      }
-      40% {
-        opacity: 0.7;
-        transform: translateY(0);
-      }
+      0%, 100% { opacity: 0.4; transform: translateY(0); }
+      20% { opacity: 1; transform: scale(1.15); }
+      40% { opacity: 0.7; transform: translateY(0); }
     }
-    /* Shooting Stars */
+
+    .hero-side-text {
+      max-width: 500px;
+      font-size: 15px;
+      color: #cccccc;
+      line-height: 1.6;
+    }
+
+    .hero-side-text a {
+      color: var(--accent);
+      display: inline-block;
+      margin-top: 15px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* --- 4-Card Grid Section (2x2 on Mobile via Media Query) --- */
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 80px;
+    }
+
+    .matrix-card {
+      background: var(--button-bg);
+      border: 1px solid var(--button-border);
+      border-radius: var(--radius);
+      padding: 30px 25px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+
+    .matrix-card:hover {
+      background-color: rgba(124, 58, 237, 0.18);
+      border-color: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--accent-glow);
+    }
+
+    .matrix-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .matrix-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .matrix-card .card-link {
+      font-size: 20px;
+      color: #ffffff;
+      align-self: flex-start;
+      margin-top: 15px;
+    }
+
+    /* --- Stacked Asymmetric Alternating Quote Rows --- */
+    .quotes-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      margin-bottom: 80px;
+    }
+
+    .quote-container {
+      display: flex;
+      align-items: center;
+      background-color: #000000;
+      padding: 40px 0;
+      gap: 50px;
+      border-bottom: 1px solid #111;
+    }
+
+    /* Alternate Row Order arrangements */
+    .quote-container.left-align { flex-direction: row; }
+    .quote-container.right-align { flex-direction: row-reverse; }
+
+    .quote-avatar {
+      width: 240px;
+      height: 240px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border-radius: 8px;
+      filter: grayscale(100%); /* Force image display to show in black and white */
+    }
+
+    .quote-body {
+      flex-grow: 1;
+    }
+
+    .quote-body p {
+      font-size: 1.5rem;
+      line-height: 1.4;
+      font-weight: 400;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .quote-author {
+      font-size: 13px;
+      color: #8c8c8c;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* --- 360° Value Display --- */
+    .value-callout {
+      text-align: center;
+      padding: 60px 0;
+      margin-bottom: 40px;
+    }
+
+    .value-callout h2 {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 15px;
+    }
+
+    .value-callout p {
+      font-size: 1.1rem;
+      color: #aaaaaa;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* --- Social Functional Interaction Hub Buttons --- */
+    .social-btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+
+    .social-functional-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 35px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      background: var(--button-bg);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      min-width: 160px;
+    }
+
+    .social-functional-btn:hover {
+      background-color: rgba(124, 58, 237, 0.2);
+      border-color: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--accent-glow);
+    }
+
+    /* --- Massive Brand Footer --- */
+    footer {
+      border-top: 1px solid #222;
+      padding: 80px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand h2 {
+      font-size: 4.5rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -2px;
+    }
+
+    .footer-paypal-link a {
+      color: #a595e8;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px dashed var(--accent);
+      padding: 12px 24px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .footer-paypal-link a:hover {
+      background: rgba(124, 58, 237, 0.1);
+      color: #ffffff;
+    }
+
+    .footer-copy {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* --- Shooting Stars Canvas Environment --- */
     .star {
       position: fixed;
       top: 0;
@@ -298,17 +428,11 @@
     }
 
     @keyframes shoot {
-      0% {
-        opacity: 1;
-        transform: translate(0, 0) rotate(var(--angle));
-      }
-      100% {
-        opacity: 0;
-        transform: translate(var(--dist), var(--dist)) rotate(var(--angle));
-      }
+      0% { opacity: 1; transform: translate(0, 0) rotate(var(--angle)); }
+      100% { opacity: 0; transform: translate(var(--dist), var(--dist)) rotate(var(--angle)); }
     }
 
-    /* --- ADDED CLIENT PORTAL MODAL INTEGRATION OVERLAY --- */
+    /* --- Client Portal Modal Overlay Panels --- */
     .portal-overlay {
       position: fixed;
       top: 0;
@@ -327,7 +451,7 @@
     .portal-overlay.active {
       display: flex;
     }
-    .card {
+    .modal-card {
       background-color: #1A1A1A;
       border: 1px solid #2D2D2D;
       border-radius: 16px;
@@ -401,61 +525,172 @@
     .btn-portal-submit:hover {
       background-color: #A855F7;
     }
+
+    /* --- Responsive System Media Queries --- */
+    @media (max-width: 1100px) {
+      .quote-container { gap: 24px; padding: 40px 20px; }
+      .quote-avatar { width: 140px; height: 140px; }
+      .quote-body p { font-size: 1.15rem; }
+      .social-btn-container { flex-direction: column; align-items: center; }
+      .social-functional-btn { width: 100%; max-width: 400px; }
+      footer { flex-direction: column; gap: 40px; text-align: center; }
+    }
+
+    @media (max-width: 768px) {
+      /* Dynamic Requirement: Show 4 Grid Boxes exactly Two-by-Two (2x2) on phone displays */
+      .matrix-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .quote-container { gap: 16px; padding: 30px 10px; }
+      .quote-avatar { width: 90px; height: 90px; }
+      .quote-body p { font-size: 0.95rem; }
+      .hero-section { flex-direction: column; gap: 30px; }
+      .wrapper { padding: 120px 20px 40px 20px; }
+      header { padding: 20px; }
+      nav { gap: 15px; }
+    }
+
+    @media (max-width: 480px) {
+      .loader-wrapper { font-size: 2.2rem; height: 70px; }
+      .quote-container { gap: 12px; }
+      .quote-avatar { width: 75px; height: 75px; }
+      .quote-body p { font-size: 0.85rem; }
+      .footer-brand h2 { font-size: 2.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in { animation: none; }
+      .loader, .loader-letter { animation: none; opacity: 1; }
+    }
   </style>
 </head>
 <body>
 
-  <button id="openPortalBtn" class="px-client-portal" aria-label="Open client portal">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32" height="32" fill="none" stroke="#a595e8" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="316" cy="196" r="44" />
-      <path d="M372 196a56 56 0 00-112 0 56 56 0 00112 0z" stroke-dasharray="200 40" />
-      <path d="M316 112v-24M316 304v-24M232 196h-24M400 196h-24M256 136l-17-17M376 256l-17-17M256 256l-17 17M376 136l-17 17" />
-      <circle cx="156" cy="316" r="28" />
-      <path d="M156 264v-16M156 384v-16M104 316h-16M208 316h-16M119 279l-11-11M193 353l-11-11M119 353l-11 11M193 279l-11 11" />
-      <rect x="76" y="416" width="360" height="36" rx="18" />
-      <path d="M106 434h180M116 416l20 36M156 416l20 36M196 416l20 36M236 416l20 36M276 416l20 36" opacity="0.85" />
-    </svg>
-    <span class="px-portal-text">Client Portal</span>
-  </button>
-
-  <main class="page fade-in">
-    <header class="profile">
-      <div class="loader-wrapper">
-        <span class="loader-letter">p</span>
-        <span class="loader-letter">a</span>
-        <span class="loader-letter">l</span>
-        <span class="loader-letter">é</span>
-        <span class="loader-letter">X</span>
-        <span class="loader-letter">d</span>
-        <span class="loader-letter">i</span>
-        <span class="loader-letter">g</span>
-        <span class="loader-letter">i</span>
-        <span class="loader-letter">t</span>
-        <span class="loader-letter">a</span>
-        <span class="loader-letter">l™</span>
-        <div class="loader"></div>
-      </div>
-    </header>
-    <nav class="links" id="links" aria-label="Social and contact links">
-      <a class="link-btn" href="../overview/">Overview</a>
-      <a class="link-btn" href="../archive/">Projects Developed By paléX</a>
-      <a class="link-btn" href="https://pxappstore.pages.dev/">paléX App Store</a>
-      <a class="link-btn" href="XXXXXXXXXXXX">pXFIX (COMING SOON)</a>
-      <a class="link-btn" href="https://online.flippingbook.com/view/527610910/">Price List</a>
-      <a class="link-btn" href="https://wa.me/27627654746">Contact Us Via WhatsApp</a>
-      <a class="link-btn" href="https://www.instagram.com/palexdigitalstudio/">Connect with us on Instagram</a>
-      <a class="link-btn" href="mailto:palexonline@gmail.com">Send Us An Email</a>
-      <a class="link-btn" href="https://www.paypal.com/paypalme/palexdigital">Support Our Team Via PayPal</a>
+  <header>
+    <img src="logotransparent.jpg" alt="paléX Logo" class="logo-img">
+    <nav>
+      <a href="../overview/">Overview</a>
+      <a href="XXXXXXXXXXXX">pXFIX (COMING SOON)</a>
+      <a href="../archive/">ARCHIVE</a>
+      <a href="https://online.flippingbook.com/view/527610910/">PRICELIST</a>
+      <a href="#" id="openPortalBtn">client portal</a>
     </nav>
-    <footer class="footer">
-      <p>&copy; <span id="year"></span> paléX. All rights reserved.</p>
-    </footer>
-  </main>
+  </header>
+
+  <div class="wrapper">
+    <main class="page fade-in">
+      
+      <section class="hero-section">
+        <div class="hero-centerpiece">
+          <div class="hero-glow-circle"></div>
+          <div class="loader-wrapper">
+            <span class="loader-letter">p</span>
+            <span class="loader-letter">a</span>
+            <span class="loader-letter">l</span>
+            <span class="loader-letter">é</span>
+            <span class="loader-letter">X</span>
+            <span class="loader-letter">d</span>
+            <span class="loader-letter">i</span>
+            <span class="loader-letter">g</span>
+            <span class="loader-letter">i</span>
+            <span class="loader-letter">t</span>
+            <span class="loader-letter">a</span>
+            <span class="loader-letter">l™</span>
+            <div class="loader"></div>
+          </div>
+        </div>
+        <div class="hero-side-text">
+          <p>Digital Solutions That Help Businesses Stand Out.From websites and web applications to branding, advertisements, logos, menus, and digital marketing materials, paléX helps businesses build a stronger and more professional presence.</p>
+          <a href="#">view our catalog <span>➔</span></a>
+        </div>
+      </section>
+
+      <section class="matrix-grid">
+        <div class="matrix-card">
+          <div>
+            <h3>overview</h3>
+            <p>Explore an overview of strategies and dynamic frameworks curated by our team.</p>
+          </div>
+          <div class="card-link">➔</div>
+        </div>
+        <div class="matrix-card">
+          <div>
+            <h3>Projects Developed By paléX</h3>
+            <p>A portfolio showcase of custom ecosystems, premium digital products and deployments.</p>
+          </div>
+          <div class="card-link">➔</div>
+        </div>
+        <div class="matrix-card">
+          <div>
+            <h3>paléX App Store</h3>
+            <p>Discover advanced industrial software applications and platforms engineered for efficiency.</p>
+          </div>
+          <div class="card-link">➔</div>
+        </div>
+        <div class="matrix-card">
+          <div>
+            <h3>pXFIX (COMING SOON)</h3>
+            <p>Next-generation diagnostic suites and technical maintenance modules launching shortly.</p>
+          </div>
+          <div class="card-link">➔</div>
+        </div>
+      </section>
+
+      <section class="quotes-stack">
+        <div class="quote-container left-align">
+          <img src="image01.jpg" alt="Executive Layout Focus One" class="quote-avatar">
+          <div class="quote-body">
+            <p>"Companies must constantly look at strategy, technology and data to completely change operations, and rapidly unlock value across every layer of the enterprise business ecosystem."</p>
+            <div class="quote-author">Chief Executive Statement</div>
+          </div>
+        </div>
+
+        <div class="quote-container right-align">
+          <img src="image02.jpg" alt="Executive Layout Focus Two" class="quote-avatar">
+          <div class="quote-body">
+            <p>"Strategy without executable digital architectural engineering leaves enterprise ecosystems running in modern organizational data silos."</p>
+            <div class="quote-author">Operations Directorate Focus</div>
+          </div>
+        </div>
+
+        <div class="quote-container left-align">
+          <img src="image03.jpg" alt="Executive Layout Focus Three" class="quote-avatar">
+          <div class="quote-body">
+            <p>"Delivering continuous value pipelines guarantees a robust architecture, positioning enterprise platforms to adapt dynamically to incoming markets."</p>
+            <div class="quote-author">Strategic Integration Oversight</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="value-callout">
+        <h2>360° VALUE</h2>
+        <p>Every day, we design and deliver continuous value created across your entire digital transformation roadmap.</p>
+      </section>
+
+      <section class="social-btn-container">
+        <a href="https://wa.me/27627654746" class="social-functional-btn">WhatsApp</a>
+        <a href="https://www.instagram.com/palexdigitalstudio/" class="social-functional-btn">Instagram</a>
+        <a href="mailto:palexonline@gmail.com" class="social-functional-btn">Email</a>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-brand">
+      <h2>Digital Solutions That Help Businesses Stand Out.</h2>
+      <div class="footer-copy">&copy; <span id="year"></span> paléX. All rights reserved.</div>
+    </div>
+    <div class="footer-paypal-link">
+      <a href="https://www.paypal.com/paypalme/palexdigital">Support Our Team Via PayPal</a>
+    </div>
+  </footer>
 
   <div id="portalOverlay" class="portal-overlay">
-    <div class="card">
+    <div class="modal-card">
       <button id="closePortalBtn" class="close-portal-btn" aria-label="Close Portal">&times;</button>
-      
+       
       <div style="text-align: center; margin-bottom: 30px;">
         <h1 class="text-purple-gradient" style="font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.025em;">paléX Client Portal</h1>
         <h2 style="font-size: 19px; margin-bottom: 10px; font-weight: 700; letter-spacing: -0.025em;">Track Your Project Progress</h2>
@@ -475,19 +710,19 @@
         </div>
         <button type="submit" class="btn-portal-submit" style="margin-top: 5px; margin-bottom: 20px;">View Project</button>
       </form>
-      
+       
       <div style="text-align: center;">
         <a href="admin.html" style="font-size: 13px; text-decoration: none; color: rgba(255, 255, 255, 0.65);">Staff Admin Login</a>
       </div>
     </div>
   </div>
-  
+
   <script src="projects-data.js"></script>
   <script>
-    // Set dynamic year in footer
+    // Set dynamic year calculation inside footer display
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Shooting Stars
+    // Shooting Stars Environment Generator Scripting
     function createStar() {
       const star = document.createElement("div");
       star.className = "star";
@@ -500,25 +735,25 @@
       document.body.appendChild(star);
       setTimeout(() => star.remove(), 5000);
     }
-
     setInterval(createStar, 300);
 
-    // --- CLIENT PORTAL POPUP & REDIRECT SCRIPTING HANDLERS ---
+    // Client Modal Portal Pop-up View Trigger Handlers
     const overlay = document.getElementById('portalOverlay');
     const openBtn = document.getElementById('openPortalBtn');
     const closeBtn = document.getElementById('closePortalBtn');
 
-    openBtn.addEventListener('click', () => overlay.classList.add('active'));
+    openBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      overlay.classList.add('active');
+    });
     closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
-
-    // Close when clicking empty space outside the card box area context
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) overlay.classList.remove('active');
     });
 
     document.getElementById('login-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      
+       
       const inputCode = document.getElementById('tracking-code').value.trim();
       const inputPass = document.getElementById('password').value.trim();
       const errorDiv = document.getElementById('error-message');
