@@ -41,7 +41,7 @@
     letter-spacing: 0.15em;
     color: var(--text-muted);
     margin-bottom: 40px;
-    padding-right: 40px;
+    padding-left: 40px;
   }
 
   .main-title {
@@ -56,7 +56,7 @@
   .menu-icon {
     position: absolute;
     top: 60px;
-    right: 24px;
+    left: 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -79,7 +79,7 @@
     display: none;
     position: absolute;
     top: 90px;
-    right: 24px;
+    left: 24px;
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
     padding: 20px;
@@ -116,14 +116,8 @@
   /* Side-by-Side Sections Container */
   .sections-side-by-side {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 40px;
-  }
-
-  @media (min-width: 992px) {
-    .sections-side-by-side {
-      grid-template-columns: 1fr 1fr;
-    }
   }
 
   /* Section Titles */
@@ -429,7 +423,7 @@
           <span>&nearr;</span>
         </a>
 
-        <a class="contact-card" href="mailto:palexonline@gmail.com">
+        <a class="contact-card" href="mailto:palexdigital@gmail.com">
           <span class="contact-title">Email Us</span>
           <span>&nearr;</span>
         </a>
