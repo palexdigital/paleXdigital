@@ -22,7 +22,7 @@
       --text: #ffffff;
       --text-muted: rgba(255, 255, 255, 0.65);
       --button-bg: rgba(255, 255, 255, 0.06);
-      --button-border: #7c3aed; /* Updated to purple border for each grid card */
+      --button-border: #7c3aed;
       --max-width: 1400px;
       --radius: 12px;
     }
@@ -102,107 +102,19 @@
     .hero-section {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       margin-bottom: 60px;
       border-bottom: 1px solid #222;
       padding-bottom: 40px;
     }
 
-    /* Hero Centerpiece Circle Glow Configuration */
-    .hero-centerpiece {
-      position: relative;
-      display: inline-block;
-      padding: 20px;
-    }
-
-    .hero-glow-circle {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle, var(--accent) 0%, rgba(124, 58, 237, 0) 70%);
-      border-radius: 50%;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    /* Container centered and clean */
-    .loader-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 180px;
-      height: 180px;
-      background-color: transparent;
-      user-select: none;
-      z-index: 2;
-    }
-
-    /* Hyper-vibrant dark purple spinning circle */
-    .loader {
-      position: absolute;
-      top: 0;
-      left: 0;
+    /* Main Center Image Replacement */
+    .hero-main-logo {
       width: 100%;
-      aspect-ratio: 1 / 1;
-      border-radius: 50%;
-      background-color: transparent;
-      animation: loader-rotate 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-      z-index: 0;
-    }
-
-    /* Deep dark purple and violet neon glow keyframes */
-    @keyframes loader-rotate {
-      0% {
-        transform: rotate(0deg);
-        box-shadow:
-          0 0 15px 2px #d8b4fe inset,            /* Soft light purple inner core */
-          0 10px 30px 5px #6b21a8 inset,          /* Dark rich purple intermediate */
-          0 30px 60px 10px #3b0764 inset,          /* Ultra-dark deep purple base */
-          0 0 30px 4px rgba(107, 33, 168, 0.65);  /* Intense dark purple outer aura */
-      }
-      50% {
-        transform: rotate(180deg);
-        box-shadow:
-          0 0 15px 2px #c084fc inset,            /* Bright neon violet inner core */
-          0 10px 25px 5px #4c1d95 inset,          /* Vibrant dark indigo-purple */
-          0 30px 60px 10px #2e1065 inset,          /* Midnight purple base */
-          0 0 40px 6px rgba(147, 51, 234, 0.7);   /* Vivid violet external cloud glow */
-      }
-      100% {
-        transform: rotate(360deg);
-        box-shadow:
-          0 0 15px 2px #d8b4fe inset,
-          0 10px 30px 5px #6b21a8 inset,
-          0 30px 60px 10px #3b0764 inset,
-          0 0 30px 4px rgba(107, 33, 168, 0.65);
-      }
-    }
-
-    /* Target background logo image inside loader */
-    .hero-bg-logo {
-      position: absolute;
-      width: 75%;
-      height: 75%;
+      max-width: 400px;
+      height: auto;
       object-fit: contain;
-      border-radius: 50%;
-      opacity: 0.35;
-      z-index: 1;
       pointer-events: none;
-    }
-
-    /* Single element text layer styling */
-    .hero-title-text {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #ffffff;
-      text-align: center;
-      line-height: 1.2;
-      white-space: nowrap;
-      z-index: 2;
     }
 
     .hero-side-text {
@@ -295,7 +207,7 @@
       object-fit: cover;
       flex-shrink: 0;
       border-radius: 8px;
-      filter: grayscale(100%); /* Force image display to show in black and white */
+      filter: grayscale(100%);
     }
 
     .quote-body {
@@ -535,7 +447,6 @@
     }
 
     @media (max-width: 768px) {
-      /* Dynamic Requirement: Show 4 Grid Boxes exactly Two-by-Two (2x2) on phone displays */
       .matrix-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
@@ -558,7 +469,6 @@
 
     @media (prefers-reduced-motion: reduce) {
       .fade-in { animation: none; }
-      .loader { animation: none; opacity: 1; }
     }
   </style>
 </head>
@@ -568,7 +478,6 @@
     <img src="logotransparent.jpg" alt="paléX Logo" class="logo-img">
     <nav>
       <a href="../overview/">Overview</a>
-      <a href="XXXXXXXXXXXX">pXFIX (COMING SOON)</a>
       <a href="../archive/">ARCHIVE</a>
       <a href="https://online.flippingbook.com/view/527610910/">PRICELIST</a>
       <a href="#" id="openPortalBtn">client portal</a>
@@ -579,14 +488,7 @@
     <main class="page fade-in">
       
       <section class="hero-section">
-        <div class="hero-centerpiece">
-          <div class="hero-glow-circle"></div>
-          <div class="loader-wrapper">
-            <img src="logotransparent.jpg" alt="paléX Logo Center" class="hero-bg-logo">
-            <div class="hero-title-text">paléX<br>digital</div>
-            <div class="loader"></div>
-          </div>
-        </div>
+        <img src="logotransparent.jpg" alt="paléX Logo Center" class="hero-main-logo">
         <div class="hero-side-text">
           <p>Digital Solutions That Help Businesses Stand Out.From websites and web applications to branding, advertisements, logos, menus, and digital marketing materials, paléX helps businesses build a stronger and more professional presence.</p>
           <a href="#">view our catalog <span>➔</span></a>
@@ -624,6 +526,17 @@
         </div>
       </section>
 
+      <section class="value-callout">
+        <h2>360° VALUE</h2>
+        <p>Every day, we design and deliver continuous value created across your entire digital transformation roadmap.</p>
+      </section>
+
+      <section class="social-btn-container">
+        <a href="https://wa.me/27627654746" class="social-functional-btn">WhatsApp</a>
+        <a href="https://www.indigo.com/palexdigitalstudio/" class="social-functional-btn">Instagram</a>
+        <a href="mailto:palexonline@gmail.com" class="social-functional-btn">Email</a>
+      </section>
+
       <section class="quotes-stack">
         <div class="quote-container left-align">
           <img src="image01.jpg" alt="Executive Layout Focus One" class="quote-avatar">
@@ -648,17 +561,6 @@
             <div class="quote-author">Strategic Integration Oversight</div>
           </div>
         </div>
-      </section>
-
-      <section class="value-callout">
-        <h2>360° VALUE</h2>
-        <p>Every day, we design and deliver continuous value created across your entire digital transformation roadmap.</p>
-      </section>
-
-      <section class="social-btn-container">
-        <a href="https://wa.me/27627654746" class="social-functional-btn">WhatsApp</a>
-        <a href="https://www.instagram.com/palexdigitalstudio/" class="social-functional-btn">Instagram</a>
-        <a href="mailto:palexonline@gmail.com" class="social-functional-btn">Email</a>
       </section>
 
     </main>
@@ -706,10 +608,8 @@
 
   <script src="projects-data.js"></script>
   <script>
-    // Set dynamic year calculation inside footer display
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Shooting Stars Environment Generator Scripting
     function createStar() {
       const star = document.createElement("div");
       star.className = "star";
@@ -724,7 +624,6 @@
     }
     setInterval(createStar, 300);
 
-    // Client Modal Portal Pop-up View Trigger Handlers
     const overlay = document.getElementById('portalOverlay');
     const openBtn = document.getElementById('openPortalBtn');
     const closeBtn = document.getElementById('closePortalBtn');
