@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>paléXarchive</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Tailwind CSS injected to support premium styling and layout -->
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -31,27 +33,42 @@
     padding: 0 24px;
   }
 
-  /* 1. Top Navigation Bar */
+  /* 1. Top Navigation Bar (Clean Centered Style matching homepage) */
   nav {
     width: 100%;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
+    justify-content: center;
     align-items: center;
     padding: 30px 0;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--text-muted);
     position: relative;
+    min-height: 80px;
   }
 
-  .nav-left-zone {
+  .nav-center-zone {
+    text-align: center;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
+    justify-content: center;
   }
 
-  /* Back Button Styling replacing menu-icon */
+  .nav-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    color: var(--accent-cream);
+    text-transform: uppercase;
+  }
+
+  .nav-subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Back Button Styling replacing menu-icon, pinned to left side */
   .back-btn {
     display: inline-flex;
     align-items: center;
@@ -66,6 +83,8 @@
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
+    position: absolute;
+    left: 0;
   }
 
   .back-btn:hover {
@@ -73,36 +92,19 @@
     color: var(--bg-dark);
   }
 
-  .nav-tagline {
-    text-align: right;
-  }
-
-  /* 2. Hero Section */
-  .hero-section {
-    padding: 80px 0;
-  }
-
-  .main-title {
-    font-size: clamp(3rem, 8vw, 6.5rem);
-    font-weight: 700;
-    line-height: 0.9;
-    text-transform: uppercase;
-    letter-spacing: -0.03em;
-    text-align: left;
-  }
-
   /* Vertical Rhythm Spacing between major sections */
   .main-content-area {
     display: flex;
     flex-direction: column;
     gap: 100px; 
+    padding-top: 60px;
     padding-bottom: 100px;
   }
 
-  /* 3. Two-Column Content Section Grid layout */
+  /* Two-Column Grid: Restricts content to left column (ending at screen middle) */
   .sections-side-by-side {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 24px;
     align-items: start;
   }
@@ -118,7 +120,7 @@
     margin-bottom: 30px;
   }
 
-  /* 4. Card Structure */
+  /* 4. Card Structure - Made larger, professional, and perfectly padded */
   .projects-stack {
     display: flex;
     flex-direction: column;
@@ -128,11 +130,11 @@
   .project-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
-    padding: 24px;
+    padding: 32px 28px;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
     text-decoration: none;
     color: var(--accent-cream);
     width: 100%;
@@ -144,9 +146,10 @@
     transform: translateY(-2px);
   }
 
+  /* Enlarged logo frame to match requested "bigger profile" visual impact */
   .project-logo-frame {
-    width: 60px;
-    height: 60px;
+    width: 76px;
+    height: 76px;
     border-radius: 50%;
     border: 1px solid var(--border-color);
     background-color: #0d0d0d;
@@ -175,28 +178,29 @@
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .project-title {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.2;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .project-desc {
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-height: 1.5;
   }
 
   .project-action {
@@ -228,29 +232,40 @@
     margin-bottom: 20px;
   }
 
-  /* Responsive styling specifically designed to keep layout side-by-side neatly on narrow mobile viewports */
-  @media (max-width: 640px) {
+  /* Responsive styling designed to look professional, clean, and proportional on mobile viewports */
+  @media (max-width: 768px) {
     .sections-side-by-side {
-      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .layout-wrapper {
+      padding: 0 16px;
     }
 
     .project-card {
       grid-template-columns: 1fr;
-      gap: 12px;
-      padding: 16px;
+      gap: 16px;
+      padding: 24px;
       position: relative;
     }
 
     .project-logo-frame {
-      width: 44px;
-      height: 44px;
+      width: 60px;
+      height: 60px;
     }
 
     .project-action {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 24px;
+      right: 24px;
       font-size: 1.1rem;
+    }
+
+    .back-btn {
+      padding: 4px 8px;
+      font-size: 0.65rem;
     }
   }
 </style>
@@ -260,17 +275,13 @@
   <div class="layout-wrapper">
     
     <nav>
-      <div class="nav-left-zone">
-        <button class="back-btn" onclick="history.back()">&larr; Back</button>
-        <div>paléXarchive</div>
+      <button class="back-btn" onclick="history.back()">&larr; Back</button>
+      
+      <div class="nav-center-zone">
+        <span class="nav-title">PaléX Archive</span>
+        <span class="nav-subtitle">Collection of Projects by paléXdigital</span>
       </div>
-      <div></div> 
-      <div class="nav-tagline">Collection Of Projects by paléXdigital</div>
     </nav>
-
-    <header class="hero-section">
-      <h1 class="main-title">PaléX<br>Archive</h1>
-    </header>
 
     <main class="main-content-area">
       
@@ -279,7 +290,8 @@
         <section id="official-section">
           <h2 class="section-headline">Official</h2>
           <div class="projects-stack">
-           <a class="project-card" href="https://felrontraders.pages.dev/">
+            
+            <a class="project-card" href="https://felrontraders.pages.dev/">
               <div class="project-logo-frame">
                 <img src="image10.jpg" alt="felrontraders Logo">
               </div>
@@ -303,17 +315,18 @@
               <div class="project-action">&rarr;</div>
             </a>
 
-             <a class="project-card" href="https://palexdigital.github.io/pXAPPSTORE/">
+            <a class="project-card" href="https://palexdigital.github.io/pXAPPSTORE/">
               <div class="project-logo-frame">
                 <img src="image05.png" alt="pXAPPSTORE Logo">
               </div>
               <div class="project-content">
-                <div class="project-meta"> Basic Business Website</div>
+                <div class="project-meta">Basic Business Website</div>
                 <div class="project-title">pXAPPSTORE</div>
                 <div class="project-desc">PXAppStore is an app marketplace that provides users with access to a wide range of applications, offering a convenient platform to discover and download mobile apps.</div>
               </div>
               <div class="project-action">&rarr;</div>
             </a>
+            
           </div>
         </section>
 
