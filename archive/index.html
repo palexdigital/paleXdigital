@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>paléXarchive</title>
+<title>PaléX Archive</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <!-- Tailwind CSS injected to support the requested folder component styles -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -220,6 +220,10 @@
 
   /* Responsive styling specifically designed to keep layout side-by-side neatly on narrow mobile viewports */
   @media (max-width: 640px) {
+    .layout-wrapper {
+      padding: 0 16px;
+    }
+
     .sections-side-by-side {
       gap: 12px;
     }
@@ -230,6 +234,27 @@
     
     .contact-title {
       font-size: 1rem;
+    }
+
+    /* Responsive Folder Sizing to prevent viewport overflow on small screens */
+    .folder-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 110px;
+    }
+
+    .folder-container .file {
+      transform: scale(0.52);
+      transform-origin: center center;
+      margin: 0;
+    }
+
+    .folder-label {
+      font-size: 1.1rem !important;
+      padding-top: 8px !important;
+      text-align: center;
     }
   }
 </style>
@@ -245,10 +270,10 @@
           <span></span>
           <span></span>
         </div>
-        <div>paléXarchive &copy; 2026</div>
+        <div>PaléX Archive &copy; 2026</div>
       </div>
       <div></div> 
-      <div class="nav-tagline">Collection Of Projects by paléXdigital</div>
+      <div class="nav-tagline">Collection of Projects by paléXdigital</div>
       
       <div class="menu-dropdown" id="menuDropdown">
         <a href="Official/" onclick="toggleMenu()">Official</a>
@@ -258,7 +283,7 @@
 
     <header class="hero-section">
       <h1 class="main-title">PaléX Archive</h1>
-      <div class="hero-subtitle">Collection Of Projects by paléXdigital</div>
+      <div class="hero-subtitle">Collection of Projects by paléXdigital</div>
     </header>
 
     <main class="main-content-area">
@@ -268,28 +293,32 @@
         <!-- Official / Completed Work Folder -->
         <a href="Official/" class="block no-underline text-inherit">
           <section class="relative group flex flex-col items-center justify-center w-full h-full">
-            <div class="file relative w-60 h-40 cursor-pointer origin-bottom [perspective:1500px] z-50">
-              <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none group-hover:shadow-[0_20px_40px_rgba(0,0,0,.2)] transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%);]"></div>
-              <div class="work-4 absolute inset-1 bg-zinc-400 rounded-2xl transition-all ease duration-300 origin-bottom select-none group-hover:[transform:rotateX(-20deg)]"></div>
-              <div class="work-3 absolute inset-1 bg-zinc-300 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-30deg)]"></div>
-              <div class="work-2 absolute inset-1 bg-zinc-200 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-38deg)]"></div>
-              <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%);] transition-all ease duration-300 origin-bottom flex items-end group-hover:shadow-[inset_0_20px_40px_#fbbf24,_inset_0_-20px_40px_#d97706] group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
+            <div class="folder-container">
+              <div class="file relative w-60 h-40 cursor-pointer origin-bottom [perspective:1500px] z-50">
+                <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none group-hover:shadow-[0_20px_40px_rgba(0,0,0,.2)] transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%);]"></div>
+                <div class="work-4 absolute inset-1 bg-zinc-400 rounded-2xl transition-all ease duration-300 origin-bottom select-none group-hover:[transform:rotateX(-20deg)]"></div>
+                <div class="work-3 absolute inset-1 bg-zinc-300 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-30deg)]"></div>
+                <div class="work-2 absolute inset-1 bg-zinc-200 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-38deg)]"></div>
+                <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%);] transition-all ease duration-300 origin-bottom flex items-end group-hover:shadow-[inset_0_20px_40px_#fbbf24,_inset_0_-20px_40px_#d97706] group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
+              </div>
             </div>
-            <p class="text-3xl pt-4 opacity-100 font-medium">official/completed work</p>
+            <p class="folder-label text-3xl pt-4 opacity-100 font-medium text-center">Official / Completed Work</p>
           </section>
         </a>
 
         <!-- Demo Folder -->
         <a href="Demo/" class="block no-underline text-inherit">
           <section class="relative group flex flex-col items-center justify-center w-full h-full">
-            <div class="file relative w-60 h-40 cursor-pointer origin-bottom [perspective:1500px] z-50">
-              <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none group-hover:shadow-[0_20px_40px_rgba(0,0,0,.2)] transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%);]"></div>
-              <div class="work-4 absolute inset-1 bg-zinc-400 rounded-2xl transition-all ease duration-300 origin-bottom select-none group-hover:[transform:rotateX(-20deg)]"></div>
-              <div class="work-3 absolute inset-1 bg-zinc-300 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-30deg)]"></div>
-              <div class="work-2 absolute inset-1 bg-zinc-200 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-38deg)]"></div>
-              <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%);] transition-all ease duration-300 origin-bottom flex items-end group-hover:shadow-[inset_0_20px_40px_#fbbf24,_inset_0_-20px_40px_#d97706] group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
+            <div class="folder-container">
+              <div class="file relative w-60 h-40 cursor-pointer origin-bottom [perspective:1500px] z-50">
+                <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none group-hover:shadow-[0_20px_40px_rgba(0,0,0,.2)] transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%);]"></div>
+                <div class="work-4 absolute inset-1 bg-zinc-400 rounded-2xl transition-all ease duration-300 origin-bottom select-none group-hover:[transform:rotateX(-20deg)]"></div>
+                <div class="work-3 absolute inset-1 bg-zinc-300 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-30deg)]"></div>
+                <div class="work-2 absolute inset-1 bg-zinc-200 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-38deg)]"></div>
+                <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%);] transition-all ease duration-300 origin-bottom flex items-end group-hover:shadow-[inset_0_20px_40px_#fbbf24,_inset_0_-20px_40px_#d97706] group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
+              </div>
             </div>
-            <p class="text-3xl pt-4 opacity-100 font-medium">demo</p>
+            <p class="folder-label text-3xl pt-4 opacity-100 font-medium text-center">Demo</p>
           </section>
         </a>
 
@@ -318,7 +347,7 @@
   <footer>
     <div class="footer-logo">PaléX Archive</div>
     <div class="footer-meta">
-      <span>paléXarchive &middot; 2026</span>
+      <span>PaléX Archive &middot; 2026</span>
       <span>TERMS OF USE</span>
       <span>COOKIE POLICY</span>
       <span>LICENSING</span>
