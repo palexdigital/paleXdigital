@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>paléXarchive</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Tailwind CSS injected to support the requested folder component styles -->
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -118,6 +120,14 @@
     text-align: left;
   }
 
+  .hero-subtitle {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-top: 16px;
+  }
+
   /* Vertical Rhythm Spacing between major sections */
   .main-content-area {
     display: flex;
@@ -143,99 +153,6 @@
     text-transform: uppercase;
     letter-spacing: 0.02em;
     margin-bottom: 30px;
-  }
-
-  /* 4. Card Structure */
-  .projects-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; 
-  }
-
-  .project-card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    padding: 24px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 20px;
-    text-decoration: none;
-    color: var(--accent-cream);
-    width: 100%;
-    transition: transform 0.2s, background-color 0.2s;
-  }
-
-  .project-card:hover {
-    background-color: #1a1a1a;
-    transform: translateY(-2px);
-  }
-
-  .project-logo-frame {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 1px solid var(--border-color);
-    background-color: #0d0d0d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    overflow: hidden;
-  }
-
-  .project-logo-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .project-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 0;
-  }
-
-  .project-meta {
-    font-size: 0.68rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .project-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 6px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .project-desc {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .project-action {
-    font-size: 1.3rem;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .project-card:hover .project-action {
-    color: var(--accent-cream);
   }
 
   /* 5. Contact Section Cards */
@@ -264,6 +181,15 @@
   .contact-title {
     font-size: 1.15rem;
     font-weight: 500;
+  }
+
+  /* Project Action for links */
+  .project-action {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* 6. Footer Section */
@@ -297,25 +223,6 @@
     .sections-side-by-side {
       gap: 12px;
     }
-
-    .project-card {
-      grid-template-columns: 1fr;
-      gap: 12px;
-      padding: 16px;
-      position: relative;
-    }
-
-    .project-logo-frame {
-      width: 44px;
-      height: 44px;
-    }
-
-    .project-action {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      font-size: 1.1rem;
-    }
     
     .contact-card {
       padding: 16px;
@@ -344,148 +251,48 @@
       <div class="nav-tagline">Collection Of Projects by paléXdigital</div>
       
       <div class="menu-dropdown" id="menuDropdown">
-        <a href="#official-section" onclick="toggleMenu()">Official</a>
-        <a href="#demo-section" onclick="toggleMenu()">Demo</a>
+        <a href="/Official" onclick="toggleMenu()">Official</a>
+        <a href="/Demo" onclick="toggleMenu()">Demo</a>
       </div>
     </nav>
 
     <header class="hero-section">
-      <h1 class="main-title">PaléX<br>Archive</h1>
+      <h1 class="main-title">PaléX Archive</h1>
+      <div class="hero-subtitle">Collection Of Projects by paléXdigital</div>
     </header>
 
     <main class="main-content-area">
       
       <div class="sections-side-by-side">
         
-        <section id="official-section">
-          <h2 class="section-headline">Official</h2>
-          <div class="projects-stack">
-           <a class="project-card" href="https://felrontraders.pages.dev/">
-              <div class="project-logo-frame">
-                <img src="image10.jpg" alt="felrontraders Logo">
-              </div>
-              <div class="project-content">
-                <div class="project-meta">Professional Business Website</div>
-                <div class="project-title">Felron Traders</div>
-                <div class="project-desc">Felron Traders (Private) Limited bridges global supply chains with local Zimbabwean industry lines. We provide dependable procurement services and top-quality goods supporting construction, healthcare, engineering, and industrial development.</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
+        <!-- Official / Completed Work Folder -->
+        <a href="/Official" class="block no-underline text-inherit">
+          <section class="relative group flex flex-col items-center justify-center w-full h-full">
+            <div class="file relative w-60 h-40 cursor-pointer origin-bottom [perspective:1500px] z-50">
+              <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none group-hover:shadow-[0_20px_40px_rgba(0,0,0,.2)] transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%);]"></div>
+              <div class="work-4 absolute inset-1 bg-zinc-400 rounded-2xl transition-all ease duration-300 origin-bottom select-none group-hover:[transform:rotateX(-20deg)]"></div>
+              <div class="work-3 absolute inset-1 bg-zinc-300 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-30deg)]"></div>
+              <div class="work-2 absolute inset-1 bg-zinc-200 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-38deg)]"></div>
+              <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%);] transition-all ease duration-300 origin-bottom flex items-end group-hover:shadow-[inset_0_20px_40px_#fbbf24,_inset_0_-20px_40px_#d97706] group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
+            </div>
+            <p class="text-3xl pt-4 opacity-100 font-medium">official/completed work</p>
+          </section>
+        </a>
 
-            <a class="project-card" href="https://nmlhome.pages.dev/">
-              <div class="project-logo-frame">
-                <img src="image11.png" alt="web Logo">
-              </div>
-              <div class="project-content">
-                <div class="project-meta">E-Commerce Store</div>
-                <div class="project-title">NML HOME</div>
-                <div class="project-desc">NML HOME is a premium South African e-commerce brand that designs and sells tailored, luxury home textiles and kitchenware—such as high-end aprons, designer cushions, oven mitts, and elegant satin fabrics—crafted to elevate everyday residential comfort and interior styling.</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
+        <!-- Demo Folder -->
+        <a href="/Demo" class="block no-underline text-inherit">
+          <section class="relative group flex flex-col items-center justify-center w-full h-full">
+            <div class="file relative w-60 h-40 cursor-pointer origin-bottom [perspective:1500px] z-50">
+              <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-2xl rounded-tl-none group-hover:shadow-[0_20px_40px_rgba(0,0,0,.2)] transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-20 after:h-4 after:bg-amber-600 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[15px] before:left-[75.5px] before:w-4 before:h-4 before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%);]"></div>
+              <div class="work-4 absolute inset-1 bg-zinc-400 rounded-2xl transition-all ease duration-300 origin-bottom select-none group-hover:[transform:rotateX(-20deg)]"></div>
+              <div class="work-3 absolute inset-1 bg-zinc-300 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-30deg)]"></div>
+              <div class="work-2 absolute inset-1 bg-zinc-200 rounded-2xl transition-all ease duration-300 origin-bottom group-hover:[transform:rotateX(-38deg)]"></div>
+              <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[156px] rounded-2xl rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[146px] after:h-[16px] after:bg-amber-400 after:rounded-t-2xl before:absolute before:content-[''] before:-top-[10px] before:right-[142px] before:size-3 before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%);] transition-all ease duration-300 origin-bottom flex items-end group-hover:shadow-[inset_0_20px_40px_#fbbf24,_inset_0_-20px_40px_#d97706] group-hover:[transform:rotateX(-46deg)_translateY(1px)]"></div>
+            </div>
+            <p class="text-3xl pt-4 opacity-100 font-medium">demo</p>
+          </section>
+        </a>
 
-             <a class="project-card" href="https://palexdigital.github.io/pXAPPSTORE/">
-              <div class="project-logo-frame">
-                <img src="image05.png" alt="pXAPPSTORE Logo">
-              </div>
-              <div class="project-content">
-                <div class="project-meta"> Basic Business Website</div>
-                <div class="project-title">pXAPPSTORE</div>
-                <div class="project-desc">PXAppStore is an app marketplace that provides users with access to a wide range of applications, offering a convenient platform to discover and download mobile apps.</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
-          </div>
-        </section>
-
-        <section id="demo-section">
-          <h2 class="section-headline">Demo</h2>
-          <div class="projects-stack">
-            <a class="project-card" href="https://palexdigital.github.io/The-Nail-Technique/">
-              <div class="project-logo-frame">
-                <img src="image09.jpg" alt="The-Nail-Technique Logo">
-              </div>
-              <div class="project-content">
-                <div class="project-meta">E-Commerce Store</div>
-                <div class="project-title">The Nail Technique</div>
-                <div class="project-desc">Known for exceptional nail artistry, professionalism and quality service.The Nail Technique also offer expert nail classes to help aspiring technicians build successful careers.</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
-           
-            <a class="project-card" href="https://palexdigital.github.io/DR.-SIFISO-NKOSI-Aesthetic-Clinic/">
-              <div class="project-logo-frame">
-                <img src="image01.jpg" alt="web Logo">
-              </div>
-              <div class="project-content">
-                <div class="project-meta">Basic Business Website</div>
-                <div class="project-title">Dr Sifiso Nkosi Aesthetic Clinic</div>
-                <div class="project-desc">Dr Sifiso Nkosi Aesthetic is a medical aesthetics clinic located in Die Wilgers, Pretoria, Gauteng, South Africa.</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
-
-            <a class="project-card" href="https://palexdigital.github.io/Maison-de-Luxe/">
-              <div class="project-logo-frame">
-                <img src="image02.jpg" alt="Maison-de-Luxe">
-              </div>
-              <div class="project-content">
-                <div class="project-meta">E-Commerce Store</div>
-                <div class="project-title">Maison de Luxe</div>
-                <div class="project-desc">Maison de Luxe is a thrift store specializing in authentic pre-loved luxury purses and bags. Known for quality and authenticity, it has built a strong following on Instagram.</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
-
-            <a class="project-card" href="https://palexdigital.github.io/blocksourcing/">
-              <div class="project-logo-frame">
-                <img src="image12.jpg" alt="BLOCK Logo">
-              </div>
-              <div class="project-content">
-                <div class="project-meta">Basic Business Website</div>
-                <div class="project-title">block</div>
-                <div class="project-desc">Block is a sourcing service connecting South Africa to trusted suppliers and products in China.</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
-           
-            <a class="project-card" href="https://palexdigital.github.io/RICHENDOR-GENERAL-TRADING/">
-              <div class="project-logo-frame">
-                <img src="image03.jpg" alt="Richendor Logo">
-              </div>
-              <div class="project-content">
-                <div class="project-meta">E-Commerce</div>
-                <div class="project-title">Richendor General Trading</div>
-                <div class="project-desc">Quality Apple devices, accessories, and everyday tech essentials.</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
-
-            <a class="project-card" href="https://palexdigital.github.io/Vogue-Fabrics/">
-              <div class="project-logo-frame">
-                <img src="image04.jpg" alt="Vogue logo">
-              </div>
-              <div class="project-content">
-                <div class="project-meta">E-Commerce Store</div>
-                <div class="project-title">Vogue Fabrics</div>
-                <div class="project-desc">Vogue Fabrics is a renowned Nigerian fashion and textile brand offering premium fabrics and stylish dresses.</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
-
-            <a class="project-card" href="https://xxxxxxxxxxx">
-              <div class="project-logo-frame">
-                <img src="image00.jpg" alt="xxxxxxxxxxx Logo">
-              </div>
-              <div class="project-content">
-                <div class="project-meta">xxxxxxxxxxx</div>
-                <div class="project-title">xxxxxxxxxxx</div>
-                <div class="project-desc">xxxxxxxxxxx</div>
-              </div>
-              <div class="project-action">&rarr;</div>
-            </a>
-          </div>
-        </section>
       </div>
 
       <section class="contact-section">
@@ -497,7 +304,7 @@
             <span class="project-action">&rarr;</span>
           </a>
 
-          <a class="contact-card" href="mailto:palexdigital@gmail.com">
+          <a class="contact-card" href="mailto:palexonline@gmail.com">
             <span class="contact-title">Email Us</span>
             <span class="project-action">&rarr;</span>
           </a>
