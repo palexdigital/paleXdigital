@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>paléXarchive</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-dark: #0a0a0a;
+    --bg-card: #141414;
+    --accent-cream: #f3f1eb;
+    --text-muted: #8a8a8a;
+    --border-color: rgba(243, 241, 235, 0.15);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--accent-cream);
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  /* Global Container Layout Rules */
+  .layout-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* 1. Top Navigation Bar */
+  nav {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: 30px 0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    position: relative;
+  }
+
+  .nav-left-zone {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  /* Back Button Styling replacing menu-icon */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--accent-cream);
+    padding: 6px 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .back-btn:hover {
+    background-color: var(--accent-cream);
+    color: var(--bg-dark);
+  }
+
+  .nav-tagline {
+    text-align: right;
+  }
+
+  /* 2. Hero Section */
+  .hero-section {
+    padding: 80px 0;
+  }
+
+  .main-title {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 700;
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    text-align: left;
+  }
+
+  /* Vertical Rhythm Spacing between major sections */
+  .main-content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 100px; 
+    padding-bottom: 100px;
+  }
+
+  /* 3. Two-Column Content Section & 5. Contact Section Grid layout */
+  .sections-side-by-side {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* Section Headings */
+  .section-headline {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.2rem, 4vw, 4rem);
+    font-style: italic;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 30px;
+  }
+
+  /* 4. Card Structure */
+  .projects-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; 
+  }
+
+  .project-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+    color: var(--accent-cream);
+    width: 100%;
+    transition: transform 0.2s, background-color 0.2s;
+  }
+
+  .project-card:hover {
+    background-color: #1a1a1a;
+    transform: translateY(-2px);
+  }
+
+  .project-logo-frame {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background-color: #0d0d0d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .project-logo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .project-meta {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .project-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .project-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .project-action {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .project-card:hover .project-action {
+    color: var(--accent-cream);
+  }
+
+  /* 6. Footer Section */
+  footer {
+    background-color: #030303;
+    border-top: 1px solid var(--border-color);
+    padding: 60px 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  .footer-logo {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  /* Responsive styling specifically designed to keep layout side-by-side neatly on narrow mobile viewports */
+  @media (max-width: 640px) {
+    .sections-side-by-side {
+      gap: 12px;
+    }
+
+    .project-card {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .project-logo-frame {
+      width: 44px;
+      height: 44px;
+    }
+
+    .project-action {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 1.1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="layout-wrapper">
+    
+    <nav>
+      <div class="nav-left-zone">
+        <button class="back-btn" onclick="history.back()">&larr; Back</button>
+        <div>paléXarchive</div>
+      </div>
+      <div></div> 
+      <div class="nav-tagline">Collection Of Projects by paléXdigital</div>
+    </nav>
+
+    <header class="hero-section">
+      <h1 class="main-title">PaléX<br>Archive</h1>
+    </header>
+
+    <main class="main-content-area">
+      
+      <div class="sections-side-by-side">
+
+        <section id="demo-section">
+          <h2 class="section-headline">Demo</h2>
+          <div class="projects-stack">
+            <a class="project-card" href="https://palexdigital.github.io/The-Nail-Technique/">
+              <div class="project-logo-frame">
+                <img src="image09.jpg" alt="The-Nail-Technique Logo">
+              </div>
+              <div class="project-content">
+                <div class="project-meta">E-Commerce Store</div>
+                <div class="project-title">The Nail Technique</div>
+                <div class="project-desc">Known for exceptional nail artistry, professionalism and quality service.The Nail Technique also offer expert nail classes to help aspiring technicians build successful careers.</div>
+              </div>
+              <div class="project-action">&rarr;</div>
+            </a>
+           
+            <a class="project-card" href="https://palexdigital.github.io/DR.-SIFISO-NKOSI-Aesthetic-Clinic/">
+              <div class="project-logo-frame">
+                <img src="image01.jpg" alt="web Logo">
+              </div>
+              <div class="project-content">
+                <div class="project-meta">Basic Business Website</div>
+                <div class="project-title">Dr Sifiso Nkosi Aesthetic Clinic</div>
+                <div class="project-desc">Dr Sifiso Nkosi Aesthetic is a medical aesthetics clinic located in Die Wilgers, Pretoria, Gauteng, South Africa.</div>
+              </div>
+              <div class="project-action">&rarr;</div>
+            </a>
+
+            <a class="project-card" href="https://palexdigital.github.io/Maison-de-Luxe/">
+              <div class="project-logo-frame">
+                <img src="image02.jpg" alt="Maison-de-Luxe">
+              </div>
+              <div class="project-content">
+                <div class="project-meta">E-Commerce Store</div>
+                <div class="project-title">Maison de Luxe</div>
+                <div class="project-desc">Maison de Luxe is a thrift store specializing in authentic pre-loved luxury purses and bags. Known for quality and authenticity, it has built a strong following on Instagram.</div>
+              </div>
+              <div class="project-action">&rarr;</div>
+            </a>
+
+            <a class="project-card" href="https://palexdigital.github.io/blocksourcing/">
+              <div class="project-logo-frame">
+                <img src="image12.jpg" alt="BLOCK Logo">
+              </div>
+              <div class="project-content">
+                <div class="project-meta">Basic Business Website</div>
+                <div class="project-title">block</div>
+                <div class="project-desc">Block is a sourcing service connecting South Africa to trusted suppliers and products in China.</div>
+              </div>
+              <div class="project-action">&rarr;</div>
+            </a>
+           
+            <a class="project-card" href="https://palexdigital.github.io/RICHENDOR-GENERAL-TRADING/">
+              <div class="project-logo-frame">
+                <img src="image03.jpg" alt="Richendor Logo">
+              </div>
+              <div class="project-content">
+                <div class="project-meta">E-Commerce</div>
+                <div class="project-title">Richendor General Trading</div>
+                <div class="project-desc">Quality Apple devices, accessories, and everyday tech essentials.</div>
+              </div>
+              <div class="project-action">&rarr;</div>
+            </a>
+
+            <a class="project-card" href="https://palexdigital.github.io/Vogue-Fabrics/">
+              <div class="project-logo-frame">
+                <img src="image04.jpg" alt="Vogue logo">
+              </div>
+              <div class="project-content">
+                <div class="project-meta">E-Commerce Store</div>
+                <div class="project-title">Vogue Fabrics</div>
+                <div class="project-desc">Vogue Fabrics is a renowned Nigerian fashion and textile brand offering premium fabrics and stylish dresses.</div>
+              </div>
+              <div class="project-action">&rarr;</div>
+            </a>
+
+            <a class="project-card" href="https://xxxxxxxxxxx">
+              <div class="project-logo-frame">
+                <img src="image00.jpg" alt="xxxxxxxxxxx Logo">
+              </div>
+              <div class="project-content">
+                <div class="project-meta">xxxxxxxxxxx</div>
+                <div class="project-title">xxxxxxxxxxx</div>
+                <div class="project-desc">xxxxxxxxxxx</div>
+              </div>
+              <div class="project-action">&rarr;</div>
+            </a>
+          </div>
+        </section>
+      </div>
+
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-logo">PaléX Archive</div>
+  </footer>
+
+</body>
+</html>
