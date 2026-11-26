@@ -253,81 +253,72 @@
       text-decoration: none;
     }
 
-    /* --- Horizontally Scrolling Image Carousel --- */
-    .px-slide-carousel-viewport {
+    /* --- Right-to-Left Circular Horizontal Carousel --- */
+    .px-carousel-viewport {
       width: 100%;
       overflow: hidden;
-      margin-top: 22px;
-      padding: 18px 0;
+      margin-top: 18px;
+      padding: 10px 0;
       position: relative;
-      mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
     }
 
-    .px-slide-carousel-track {
-      display: flex;
-      width: max-content;
-      will-change: transform;
-      animation: pxSlideScrollLeft 32s linear infinite;
-    }
-
-    .px-slide-carousel-group {
+    .px-carousel-track {
       display: flex;
       align-items: center;
-      gap: 20px;
-      padding-right: 20px;
-      flex-shrink: 0;
+      gap: 18px;
+      width: max-content;
+      will-change: transform;
     }
 
-    .px-slide-carousel-item {
+    .px-carousel-item {
+      flex: 0 0 auto;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
+      margin-top: 0;
       text-decoration: none;
-      margin-top: 0 !important;
-      border-radius: 10px;
+    }
+
+    .px-carousel-frame {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
       overflow: hidden;
-      border: 1px solid rgba(175, 115, 209, 0.45);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
-      will-change: transform;
-      animation: pxSlideSubtleRotate 5s ease-in-out infinite alternate;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transform: none;
     }
 
-    .px-slide-carousel-item:nth-child(even) {
-      animation-direction: alternate-reverse;
-    }
-
-    .px-slide-carousel-item:hover {
-      border-color: var(--accent);
-      box-shadow: 0 8px 24px var(--accent-glow);
-    }
-
-    .px-slide-carousel-item img {
+    .px-carousel-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
       display: block;
-      height: 92px;
+      transform: none;
+    }
+
+    .px-carousel-frame.px-unframed {
       width: auto;
-      max-width: 180px;
+      height: auto;
+      border-radius: 0;
+      overflow: visible;
+      background: transparent;
+      border: none;
+      transform: none;
+    }
+
+    .px-carousel-frame.px-unframed img {
+      width: auto;
+      height: 78px;
+      max-width: 140px;
       object-fit: contain;
-    }
-
-    @keyframes pxSlideScrollLeft {
-      0% {
-        transform: translate3d(0, 0, 0);
-      }
-      100% {
-        transform: translate3d(-50%, 0, 0);
-      }
-    }
-
-    @keyframes pxSlideSubtleRotate {
-      0% {
-        transform: rotate(-4deg);
-      }
-      100% {
-        transform: rotate(4deg);
-      }
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      transform: none;
     }
 
     /* --- Stacked Card Layout (Rectangles Under One Another) --- */
@@ -708,10 +699,10 @@
       .quote-avatar { width: 90px; height: 90px; }
       .quote-body p { font-size: 0.95rem; }
       .hero-section { flex-direction: column; gap: 30px; align-items: center; }
-      .hero-side-text { width: 100%; max-width: 100%; }
-      .px-slide-carousel-item img { height: 76px; max-width: 150px; }
       .wrapper { padding: 140px 20px 40px 20px; }
       header { padding: 20px; }
+      .px-carousel-frame { width: 66px; height: 66px; }
+      .px-carousel-frame.px-unframed img { height: 66px; max-width: 120px; }
     }
 
     @media (max-width: 480px) {
@@ -719,8 +710,6 @@
       .quote-avatar { width: 75px; height: 75px; }
       .quote-body p { font-size: 0.85rem; }
       .footer-brand h2 { font-size: 2.5rem; }
-      .px-slide-carousel-group { gap: 14px; padding-right: 14px; }
-      .px-slide-carousel-item img { height: 64px; max-width: 130px; }
       .matrix-card {
         flex-direction: column;
         align-items: flex-start;
@@ -729,6 +718,8 @@
         margin-left: 0;
         margin-top: 15px;
       }
+      .px-carousel-frame { width: 58px; height: 58px; }
+      .px-carousel-frame.px-unframed img { height: 58px; max-width: 105px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -777,33 +768,8 @@
         <div class="hero-side-text">
           <p>From websites and applications to branding, advertisements, logos, menus, and digital marketing materials, paléX helps businesses and companies build a stronger and more professional presence.</p>
           <a href="#">Let's Build Something Great.<span></span></a>
-          <div class="px-slide-carousel-viewport" aria-label="Featured Showcase Carousel">
-            <div class="px-slide-carousel-track">
-              <div class="px-slide-carousel-group">
-                <a href="https://example.com/project-01" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide01.jpg" alt="Slide 01"></a>
-                <a href="https://example.org/showcase-02" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide02.jpg" alt="Slide 02"></a>
-                <a href="https://example.net/design-03" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide03.jpg" alt="Slide 03"></a>
-                <a href="https://www.wikipedia.org/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide04.jpg" alt="Slide 04"></a>
-                <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide05.jpg" alt="Slide 05"></a>
-                <a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide06.jpg" alt="Slide 06"></a>
-                <a href="https://www.w3.org/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide07.jpg" alt="Slide 07"></a>
-                <a href="https://dribbble.com/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide08.jpg" alt="Slide 08"></a>
-                <a href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide09.jpg" alt="Slide 09"></a>
-                <a href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide10.jpg" alt="Slide 10"></a>
-              </div>
-              <div class="px-slide-carousel-group" aria-hidden="true">
-                <a href="https://example.com/project-01" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide01.jpg" alt="Slide 01"></a>
-                <a href="https://example.org/showcase-02" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide02.jpg" alt="Slide 02"></a>
-                <a href="https://example.net/design-03" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide03.jpg" alt="Slide 03"></a>
-                <a href="https://www.wikipedia.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide04.jpg" alt="Slide 04"></a>
-                <a href="https://github.com/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide05.jpg" alt="Slide 05"></a>
-                <a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide06.jpg" alt="Slide 06"></a>
-                <a href="https://www.w3.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide07.jpg" alt="Slide 07"></a>
-                <a href="https://dribbble.com/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide08.jpg" alt="Slide 08"></a>
-                <a href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide09.jpg" alt="Slide 09"></a>
-                <a href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide10.jpg" alt="Slide 10"></a>
-              </div>
-            </div>
+          <div class="px-carousel-viewport" aria-label="Featured showcase carousel">
+            <div class="px-carousel-track" id="pxCarouselTrack"></div>
           </div>
         </div>
       </section>
@@ -1025,6 +991,185 @@
         errorDiv.style.display = "block";
       }
     });
+
+    /* --- Right-to-Left Circular Horizontal Carousel Logic --- */
+    (function initPxCarousel() {
+      const track = document.getElementById('pxCarouselTrack');
+      if (!track) return;
+
+      const imageFiles = [
+        'slide01.jpg',
+        'slide02.png',
+        'slide03.png',
+        'slide04.png',
+        'slide05.png',
+        'slide06.png',
+        'slide07.jpg',
+        'slide08.png',
+        'slide09.jpg',
+        'slide10.jpg',
+        'slide11.png',
+        'slide12.jpg',
+        'slide13.jpg',
+        'slide14.png'
+      ];
+
+      const destinationPool = [
+        'https://felrontraders.pages.dev/',
+        'https://hopebaptistcentre.com/',
+        'https://nmlhome.pages.dev/',
+        'https://palexdigital.github.io/vitalsip/',
+        'https://palexdigital.github.io/clean/',
+        'https://protea-care-medical.pages.dev/',
+        'https://justicemakwela.pages.dev/',
+        'https://josedconcept.pages.dev/',
+        'https://palexdigital.github.io/OCEAN-PERFUMES/',
+        'https://palexdigital.github.io/The-Nail-Technique/',
+        'https://palexdigital.github.io/DR.-SIFISO-NKOSI-Aesthetic-Clinic/',
+        'https://palexdigital.github.io/Maison-de-Luxe/',
+        'https://palexdigital.github.io/blocksourcing/',
+        'https://tgtdiscoverytalentsearch.pages.dev/'
+      ];
+
+      function shuffleArray(arr) {
+        const copy = arr.slice();
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = copy[i];
+          copy[i] = copy[j];
+          copy[j] = temp;
+        }
+        return copy;
+      }
+
+      const assignedUrls = shuffleArray(destinationPool).slice(0, imageFiles.length);
+      const slideData = imageFiles.map((src, idx) => ({
+        src,
+        href: assignedUrls[idx],
+        index: idx
+      }));
+
+      const unframedMap = new Map();
+
+      function evaluateImageSuitability(imgEl, srcKey) {
+        if (unframedMap.has(srcKey)) {
+          if (unframedMap.get(srcKey)) {
+            applyUnframedToAll(srcKey);
+          }
+          return;
+        }
+
+        const natW = imgEl.naturalWidth;
+        const natH = imgEl.naturalHeight;
+        if (!natW || !natH) return;
+
+        const aspectRatio = natW / natH;
+        let shouldUnframe = aspectRatio > 1.65 || aspectRatio < 0.6;
+
+        if (!shouldUnframe) {
+          try {
+            const sampleSize = 64;
+            const canvas = document.createElement('canvas');
+            const scale = Math.min(1, sampleSize / Math.max(natW, natH));
+            canvas.width = Math.max(1, Math.round(natW * scale));
+            canvas.height = Math.max(1, Math.round(natH * scale));
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
+              const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+              let transparentCount = 0;
+              const totalPixels = canvas.width * canvas.height;
+              for (let i = 3; i < data.length; i += 4) {
+                if (data[i] < 250) {
+                  transparentCount++;
+                }
+              }
+              if (transparentCount / totalPixels > 0.02) {
+                shouldUnframe = true;
+              }
+            }
+          } catch (err) {
+            // Canvas pixel read may be restricted on some file/cross-origin setups; keep circular frame
+          }
+        }
+
+        unframedMap.set(srcKey, shouldUnframe);
+        if (shouldUnframe) {
+          applyUnframedToAll(srcKey);
+        }
+      }
+
+      function applyUnframedToAll(srcKey) {
+        const matchingFrames = track.querySelectorAll('[data-slide-src="' + srcKey + '"]');
+        matchingFrames.forEach((frame) => {
+          frame.classList.add('px-unframed');
+        });
+      }
+
+      function buildSlideElement(item, copyNum) {
+        const link = document.createElement('a');
+        link.className = 'px-carousel-item';
+        link.href = item.href;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.setAttribute('aria-label', 'Open ' + item.src + ' destination');
+
+        const frame = document.createElement('span');
+        frame.className = 'px-carousel-frame';
+        frame.setAttribute('data-slide-src', item.src);
+        frame.setAttribute('data-copy', String(copyNum));
+
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = 'Carousel slide ' + (item.index + 1);
+        img.loading = 'eager';
+        img.decoding = 'async';
+
+        img.addEventListener('load', function () {
+          evaluateImageSuitability(img, item.src);
+        });
+
+        frame.appendChild(img);
+        link.appendChild(frame);
+        return link;
+      }
+
+      function populateTrack() {
+        track.innerHTML = '';
+        for (let copyNum = 0; copyNum < 2; copyNum++) {
+          slideData.forEach((item) => {
+            track.appendChild(buildSlideElement(item, copyNum));
+          });
+        }
+      }
+
+      populateTrack();
+
+      let scrollOffset = 0;
+      let lastTimestamp = null;
+      const speedPxPerSec = 42;
+
+      function animateCarousel(timestamp) {
+        if (lastTimestamp === null) {
+          lastTimestamp = timestamp;
+        }
+        const deltaSec = Math.min((timestamp - lastTimestamp) / 1000, 0.1);
+        lastTimestamp = timestamp;
+
+        const halfWidth = track.scrollWidth / 2;
+        if (halfWidth > 0) {
+          scrollOffset += speedPxPerSec * deltaSec;
+          if (scrollOffset >= halfWidth) {
+            scrollOffset %= halfWidth;
+          }
+          track.style.transform = 'translate3d(' + (-scrollOffset) + 'px, 0, 0)';
+        }
+
+        window.requestAnimationFrame(animateCarousel);
+      }
+
+      window.requestAnimationFrame(animateCarousel);
+    })();
   </script>
 </body>
 </html>
