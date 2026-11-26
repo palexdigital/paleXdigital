@@ -253,6 +253,83 @@
       text-decoration: none;
     }
 
+    /* --- Horizontally Scrolling Image Carousel --- */
+    .px-slide-carousel-viewport {
+      width: 100%;
+      overflow: hidden;
+      margin-top: 22px;
+      padding: 18px 0;
+      position: relative;
+      mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    }
+
+    .px-slide-carousel-track {
+      display: flex;
+      width: max-content;
+      will-change: transform;
+      animation: pxSlideScrollLeft 32s linear infinite;
+    }
+
+    .px-slide-carousel-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-right: 20px;
+      flex-shrink: 0;
+    }
+
+    .px-slide-carousel-item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-decoration: none;
+      margin-top: 0 !important;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(175, 115, 209, 0.45);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+      will-change: transform;
+      animation: pxSlideSubtleRotate 5s ease-in-out infinite alternate;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .px-slide-carousel-item:nth-child(even) {
+      animation-direction: alternate-reverse;
+    }
+
+    .px-slide-carousel-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+
+    .px-slide-carousel-item img {
+      display: block;
+      height: 92px;
+      width: auto;
+      max-width: 180px;
+      object-fit: contain;
+    }
+
+    @keyframes pxSlideScrollLeft {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+
+    @keyframes pxSlideSubtleRotate {
+      0% {
+        transform: rotate(-4deg);
+      }
+      100% {
+        transform: rotate(4deg);
+      }
+    }
+
     /* --- Stacked Card Layout (Rectangles Under One Another) --- */
     .matrix-list {
       display: flex;
@@ -631,6 +708,8 @@
       .quote-avatar { width: 90px; height: 90px; }
       .quote-body p { font-size: 0.95rem; }
       .hero-section { flex-direction: column; gap: 30px; align-items: center; }
+      .hero-side-text { width: 100%; max-width: 100%; }
+      .px-slide-carousel-item img { height: 76px; max-width: 150px; }
       .wrapper { padding: 140px 20px 40px 20px; }
       header { padding: 20px; }
     }
@@ -640,6 +719,8 @@
       .quote-avatar { width: 75px; height: 75px; }
       .quote-body p { font-size: 0.85rem; }
       .footer-brand h2 { font-size: 2.5rem; }
+      .px-slide-carousel-group { gap: 14px; padding-right: 14px; }
+      .px-slide-carousel-item img { height: 64px; max-width: 130px; }
       .matrix-card {
         flex-direction: column;
         align-items: flex-start;
@@ -696,6 +777,34 @@
         <div class="hero-side-text">
           <p>From websites and applications to branding, advertisements, logos, menus, and digital marketing materials, paléX helps businesses and companies build a stronger and more professional presence.</p>
           <a href="#">Let's Build Something Great.<span></span></a>
+          <div class="px-slide-carousel-viewport" aria-label="Featured Showcase Carousel">
+            <div class="px-slide-carousel-track">
+              <div class="px-slide-carousel-group">
+                <a href="https://example.com/project-01" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide01.jpg" alt="Slide 01"></a>
+                <a href="https://example.org/showcase-02" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide02.jpg" alt="Slide 02"></a>
+                <a href="https://example.net/design-03" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide03.jpg" alt="Slide 03"></a>
+                <a href="https://www.wikipedia.org/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide04.jpg" alt="Slide 04"></a>
+                <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide05.jpg" alt="Slide 05"></a>
+                <a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide06.jpg" alt="Slide 06"></a>
+                <a href="https://www.w3.org/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide07.jpg" alt="Slide 07"></a>
+                <a href="https://dribbble.com/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide08.jpg" alt="Slide 08"></a>
+                <a href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide09.jpg" alt="Slide 09"></a>
+                <a href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer" class="px-slide-carousel-item"><img src="slide10.jpg" alt="Slide 10"></a>
+              </div>
+              <div class="px-slide-carousel-group" aria-hidden="true">
+                <a href="https://example.com/project-01" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide01.jpg" alt="Slide 01"></a>
+                <a href="https://example.org/showcase-02" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide02.jpg" alt="Slide 02"></a>
+                <a href="https://example.net/design-03" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide03.jpg" alt="Slide 03"></a>
+                <a href="https://www.wikipedia.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide04.jpg" alt="Slide 04"></a>
+                <a href="https://github.com/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide05.jpg" alt="Slide 05"></a>
+                <a href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide06.jpg" alt="Slide 06"></a>
+                <a href="https://www.w3.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide07.jpg" alt="Slide 07"></a>
+                <a href="https://dribbble.com/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide08.jpg" alt="Slide 08"></a>
+                <a href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide09.jpg" alt="Slide 09"></a>
+                <a href="https://www.awwwards.com/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="px-slide-carousel-item"><img src="slide10.jpg" alt="Slide 10"></a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
