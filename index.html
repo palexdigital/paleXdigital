@@ -383,6 +383,8 @@
       justify-content: center;
       margin-top: 0;
       text-decoration: none;
+      pointer-events: none;
+      cursor: default;
     }
 
     .px-carousel-frame {
@@ -395,6 +397,7 @@
       justify-content: center;
       flex-shrink: 0;
       transform: none;
+      pointer-events: none;
     }
 
     .px-carousel-frame img {
@@ -404,6 +407,8 @@
       object-position: center;
       display: block;
       transform: none;
+      pointer-events: none;
+      user-select: none;
     }
 
     .px-carousel-frame.px-unframed {
@@ -1089,56 +1094,46 @@
       if (!video || !hero) return;
 
       let audioUnlocked = false;
-      let targetVolume = 1.0;
-      let currentVolume = 1.0;
-      let volumeRafId = null;
+      let heroIsActive = true;
 
-      function applyVolume(vol) {
-        const clamped = Math.max(0, Math.min(1, vol));
-        currentVolume = clamped;
+      function setHeroAudioState(active) {
         try {
-          video.volume = clamped;
-          if (audioUnlocked) {
-            video.muted = false;
-            video.defaultMuted = false;
+          if (active) {
+            video.volume = 1.0;
+            if (audioUnlocked) {
+              video.muted = false;
+              video.defaultMuted = false;
+            }
+            if (video.paused) {
+              const p = video.play();
+              if (p && typeof p.catch === 'function') {
+                p.catch(function () {});
+              }
+            }
+          } else {
+            video.muted = true;
+            video.volume = 0;
           }
         } catch (e) {
-          // Ignore volume errors if restricted
+          // Ignore media state errors if restricted
         }
       }
 
-      function stepVolumeSmoothly() {
-        const diff = targetVolume - currentVolume;
-        if (Math.abs(diff) < 0.01) {
-          applyVolume(targetVolume);
-          volumeRafId = null;
-          return;
-        }
-        applyVolume(currentVolume + diff * 0.14);
-        volumeRafId = window.requestAnimationFrame(stepVolumeSmoothly);
-      }
-
-      function scheduleSmoothVolume(nextTarget) {
-        targetVolume = Math.max(0, Math.min(1, nextTarget));
-        if (volumeRafId === null) {
-          volumeRafId = window.requestAnimationFrame(stepVolumeSmoothly);
-        }
-      }
-
-      function computeVideoVolumeFromScroll() {
+      function isHeroSectionActive() {
         const rect = hero.getBoundingClientRect();
-        const vh = window.innerHeight || document.documentElement.clientHeight || 1;
-        if (rect.top <= 0 && rect.bottom >= vh * 0.85) {
-          return 1.0;
+        const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+        return rect.bottom > vh * 0.25 && rect.top < vh * 0.85;
+      }
+
+      function syncHeroAudioWithVisibility() {
+        const nextActive = isHeroSectionActive();
+        if (nextActive !== heroIsActive) {
+          heroIsActive = nextActive;
+          setHeroAudioState(heroIsActive);
+        } else if (heroIsActive && audioUnlocked) {
+          video.volume = 1.0;
+          video.muted = false;
         }
-        if (rect.bottom <= 0) {
-          return 0.0;
-        }
-        const visibleTop = Math.max(0, rect.top);
-        const visibleBottom = Math.min(vh, rect.bottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        const ratio = Math.max(0, Math.min(1, visibleHeight / Math.max(1, Math.min(vh, rect.height))));
-        return ratio;
       }
 
       function removeInteractionListeners() {
@@ -1150,7 +1145,7 @@
 
       function handleFirstInteraction() {
         audioUnlocked = true;
-        applyVolume(computeVideoVolumeFromScroll());
+        syncHeroAudioWithVisibility();
         const playPromise = video.play();
         if (playPromise && typeof playPromise.then === 'function') {
           playPromise.then(function () {
@@ -1164,7 +1159,7 @@
       }
 
       function attemptSoundAutoplay() {
-        applyVolume(1.0);
+        video.volume = 1.0;
         const playPromise = video.play();
         if (playPromise && typeof playPromise.then === 'function') {
           playPromise.then(function () {
@@ -1180,23 +1175,31 @@
       }
 
       video.addEventListener('loadedmetadata', function () {
-        if (audioUnlocked) {
-          applyVolume(computeVideoVolumeFromScroll());
+        if (heroIsActive) {
+          video.volume = 1.0;
+          if (audioUnlocked) {
+            video.muted = false;
+          }
         } else {
-          applyVolume(1.0);
+          video.muted = true;
+          video.volume = 0;
         }
       });
 
       video.addEventListener('play', function () {
-        if (audioUnlocked) {
-          applyVolume(computeVideoVolumeFromScroll());
+        if (heroIsActive && audioUnlocked) {
+          video.volume = 1.0;
+          video.muted = false;
+        } else if (!heroIsActive) {
+          video.muted = true;
+          video.volume = 0;
         }
       });
 
       attemptSoundAutoplay();
 
-      /* --- Controlled Two-Gesture Scroll Experience on HeroVideo --- */
-      let gestureBudget = 2;
+      /* --- Multi-Gesture Scroll Experience on HeroVideo --- */
+      let gestureBudget = 3;
       let gestureCooldown = false;
       let touchStartY = null;
       let lastScrollY = window.scrollY || window.pageYOffset || 0;
@@ -1206,7 +1209,7 @@
       function inHeroTopZone() {
         const y = window.scrollY || window.pageYOffset || 0;
         const vh = window.innerHeight || document.documentElement.clientHeight || 800;
-        return y < vh * 0.75;
+        return y < vh * 0.85;
       }
 
       function triggerGestureStep() {
@@ -1214,7 +1217,7 @@
         gestureCooldown = true;
         gestureBudget = Math.max(0, gestureBudget - 1);
         const vh = window.innerHeight || document.documentElement.clientHeight || 800;
-        const stepDistance = Math.round(vh * 0.48);
+        const stepDistance = Math.round(vh * 0.34);
         window.scrollBy({
           top: stepDistance,
           left: 0,
@@ -1222,7 +1225,7 @@
         });
         window.setTimeout(function () {
           gestureCooldown = false;
-        }, 420);
+        }, 380);
       }
 
       function handleWheel(e) {
@@ -1267,7 +1270,7 @@
         const vh = window.innerHeight || document.documentElement.clientHeight || 800;
 
         if (currentY <= 4) {
-          gestureBudget = 2;
+          gestureBudget = 3;
         }
 
         const deltaY = currentY - lastScrollY;
@@ -1293,7 +1296,7 @@
         lastScrollY = currentY;
         lastScrollTime = now;
 
-        scheduleSmoothVolume(computeVideoVolumeFromScroll());
+        syncHeroAudioWithVisibility();
       }
 
       window.addEventListener('wheel', handleWheel, { passive: false });
@@ -1301,9 +1304,14 @@
       window.addEventListener('touchmove', handleTouchMove, { passive: false });
       window.addEventListener('touchend', handleTouchEnd, { passive: true });
       window.addEventListener('scroll', handleScroll, { passive: true });
-      window.addEventListener('resize', function () {
-        scheduleSmoothVolume(computeVideoVolumeFromScroll());
-      }, { passive: true });
+      window.addEventListener('resize', syncHeroAudioWithVisibility, { passive: true });
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(function () {
+          syncHeroAudioWithVisibility();
+        }, { threshold: [0, 0.25, 0.5, 0.85, 1] });
+        observer.observe(hero);
+      }
     })();
 
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -1408,38 +1416,8 @@
         'slide14.png'
       ];
 
-      const destinationPool = [
-        'https://felrontraders.pages.dev/',
-        'https://hopebaptistcentre.com/',
-        'https://nmlhome.pages.dev/',
-        'https://palexdigital.github.io/vitalsip/',
-        'https://palexdigital.github.io/clean/',
-        'https://protea-care-medical.pages.dev/',
-        'https://justicemakwela.pages.dev/',
-        'https://josedconcept.pages.dev/',
-        'https://palexdigital.github.io/OCEAN-PERFUMES/',
-        'https://palexdigital.github.io/The-Nail-Technique/',
-        'https://palexdigital.github.io/DR.-SIFISO-NKOSI-Aesthetic-Clinic/',
-        'https://palexdigital.github.io/Maison-de-Luxe/',
-        'https://palexdigital.github.io/blocksourcing/',
-        'https://tgtdiscoverytalentsearch.pages.dev/'
-      ];
-
-      function shuffleArray(arr) {
-        const copy = arr.slice();
-        for (let i = copy.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          const temp = copy[i];
-          copy[i] = copy[j];
-          copy[j] = temp;
-        }
-        return copy;
-      }
-
-      const assignedUrls = shuffleArray(destinationPool).slice(0, imageFiles.length);
       const slideData = imageFiles.map((src, idx) => ({
         src,
-        href: assignedUrls[idx],
         index: idx
       }));
 
@@ -1501,12 +1479,9 @@
       }
 
       function buildSlideElement(item, copyNum) {
-        const link = document.createElement('a');
-        link.className = 'px-carousel-item';
-        link.href = item.href;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.setAttribute('aria-label', 'Open ' + item.src + ' destination');
+        const slideEl = document.createElement('div');
+        slideEl.className = 'px-carousel-item';
+        slideEl.setAttribute('aria-hidden', 'true');
 
         const frame = document.createElement('span');
         frame.className = 'px-carousel-frame';
@@ -1518,14 +1493,15 @@
         img.alt = 'Carousel slide ' + (item.index + 1);
         img.loading = 'eager';
         img.decoding = 'async';
+        img.draggable = false;
 
         img.addEventListener('load', function () {
           evaluateImageSuitability(img, item.src);
         });
 
         frame.appendChild(img);
-        link.appendChild(frame);
-        return link;
+        slideEl.appendChild(frame);
+        return slideEl;
       }
 
       function populateTrack() {
