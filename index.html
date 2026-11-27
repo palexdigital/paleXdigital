@@ -75,6 +75,17 @@
       pointer-events: none;
     }
 
+    .video-hero__media::-webkit-media-controls,
+    .video-hero__media::-webkit-media-controls-enclosure,
+    .video-hero__media::-webkit-media-controls-panel,
+    .video-hero__media::-webkit-media-controls-play-button,
+    .video-hero__media::-webkit-media-controls-start-playback-button {
+      display: none !important;
+      -webkit-appearance: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     .video-hero__scrim {
       position: absolute;
       inset: 0;
@@ -1095,29 +1106,48 @@
       if (!video || !hero) return;
 
       let heroIsActive = true;
+      let initializedFromStart = false;
 
-      function startAutoplayNow() {
+      function startAutoplayFromStart() {
         try {
           video.muted = true;
           video.defaultMuted = true;
+          if (!initializedFromStart) {
+            initializedFromStart = true;
+            if (video.readyState >= 1) {
+              video.currentTime = 0;
+            }
+          }
           if (video.paused) {
-            const p = video.play();
-            if (p && typeof p.catch === 'function') {
-              p.catch(function () {});
+            const playPromise = video.play();
+            if (playPromise && typeof playPromise.catch === 'function') {
+              playPromise.catch(function (err) {
+                if (window.console && typeof console.warn === 'function') {
+                  console.warn('Hero video autoplay blocked or interrupted:', err);
+                }
+              });
             }
           }
         } catch (e) {
-          // Ignore media play errors if restricted
+          if (window.console && typeof console.warn === 'function') {
+            console.warn('Hero video autoplay error:', e);
+          }
         }
       }
 
       function setHeroAudioState(active) {
         try {
           if (active) {
+            video.muted = true;
+            video.defaultMuted = true;
             if (video.paused) {
               const p = video.play();
               if (p && typeof p.catch === 'function') {
-                p.catch(function () {});
+                p.catch(function (err) {
+                  if (window.console && typeof console.warn === 'function') {
+                    console.warn('Hero video playback error:', err);
+                  }
+                });
               }
             }
           } else {
@@ -1141,13 +1171,14 @@
           heroIsActive = nextActive;
           setHeroAudioState(heroIsActive);
         } else if (heroIsActive && video.paused) {
-          startAutoplayNow();
+          startAutoplayFromStart();
         }
       }
 
       video.addEventListener('loadedmetadata', function () {
         if (heroIsActive) {
-          startAutoplayNow();
+          video.currentTime = 0;
+          startAutoplayFromStart();
         } else {
           video.muted = true;
           video.volume = 0;
@@ -1156,13 +1187,23 @@
 
       video.addEventListener('canplay', function () {
         if (heroIsActive && video.paused) {
-          startAutoplayNow();
+          startAutoplayFromStart();
         }
       });
 
-      startAutoplayNow();
-      document.addEventListener('DOMContentLoaded', startAutoplayNow, { once: true });
-      window.addEventListener('load', startAutoplayNow, { once: true });
+      video.addEventListener('error', function () {
+        if (window.console && typeof console.warn === 'function') {
+          console.warn('Hero video failed to load media source:', video.currentSrc || video.getAttribute('src'));
+        }
+      });
+
+      startAutoplayFromStart();
+      document.addEventListener('DOMContentLoaded', startAutoplayFromStart, { once: true });
+      window.addEventListener('load', startAutoplayFromStart, { once: true });
+      window.addEventListener('pageshow', function () {
+        initializedFromStart = false;
+        startAutoplayFromStart();
+      });
 
       /* --- Multi-Gesture Scroll Experience on HeroVideo --- */
       let gestureBudget = 3;
