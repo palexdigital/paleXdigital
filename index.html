@@ -1089,23 +1089,56 @@
       if (!video || !hero) return;
 
       let audioUnlocked = false;
+      let targetVolume = 1.0;
+      let currentVolume = 1.0;
+      let volumeRafId = null;
 
-      function updateVideoState() {
+      function applyVolume(vol) {
+        const clamped = Math.max(0, Math.min(1, vol));
+        currentVolume = clamped;
+        try {
+          video.volume = clamped;
+          if (audioUnlocked) {
+            video.muted = false;
+            video.defaultMuted = false;
+          }
+        } catch (e) {
+          // Ignore volume errors if restricted
+        }
+      }
+
+      function stepVolumeSmoothly() {
+        const diff = targetVolume - currentVolume;
+        if (Math.abs(diff) < 0.01) {
+          applyVolume(targetVolume);
+          volumeRafId = null;
+          return;
+        }
+        applyVolume(currentVolume + diff * 0.14);
+        volumeRafId = window.requestAnimationFrame(stepVolumeSmoothly);
+      }
+
+      function scheduleSmoothVolume(nextTarget) {
+        targetVolume = Math.max(0, Math.min(1, nextTarget));
+        if (volumeRafId === null) {
+          volumeRafId = window.requestAnimationFrame(stepVolumeSmoothly);
+        }
+      }
+
+      function computeVideoVolumeFromScroll() {
         const rect = hero.getBoundingClientRect();
         const vh = window.innerHeight || document.documentElement.clientHeight || 1;
-        const isViewingHero = rect.bottom > vh * 0.35;
-
-        if (isViewingHero) {
-          video.muted = !audioUnlocked;
-          video.volume = 1.0;
-          if (video.paused) {
-            video.play().catch(function() {});
-          }
-        } else {
-          video.muted = true;
-          video.volume = 0.0;
-          video.pause();
+        if (rect.top <= 0 && rect.bottom >= vh * 0.85) {
+          return 1.0;
         }
+        if (rect.bottom <= 0) {
+          return 0.0;
+        }
+        const visibleTop = Math.max(0, rect.top);
+        const visibleBottom = Math.min(vh, rect.bottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        const ratio = Math.max(0, Math.min(1, visibleHeight / Math.max(1, Math.min(vh, rect.height))));
+        return ratio;
       }
 
       function removeInteractionListeners() {
@@ -1117,7 +1150,7 @@
 
       function handleFirstInteraction() {
         audioUnlocked = true;
-        updateVideoState();
+        applyVolume(computeVideoVolumeFromScroll());
         const playPromise = video.play();
         if (playPromise && typeof playPromise.then === 'function') {
           playPromise.then(function () {
@@ -1131,15 +1164,13 @@
       }
 
       function attemptSoundAutoplay() {
-        video.muted = false;
-        video.volume = 1.0;
+        applyVolume(1.0);
         const playPromise = video.play();
         if (playPromise && typeof playPromise.then === 'function') {
           playPromise.then(function () {
             audioUnlocked = true;
             removeInteractionListeners();
           }).catch(function () {
-            video.muted = true;
             document.addEventListener('pointerdown', handleFirstInteraction, { capture: true, passive: true });
             document.addEventListener('touchstart', handleFirstInteraction, { capture: true, passive: true });
             document.addEventListener('keydown', handleFirstInteraction, { capture: true });
@@ -1149,11 +1180,17 @@
       }
 
       video.addEventListener('loadedmetadata', function () {
-        updateVideoState();
+        if (audioUnlocked) {
+          applyVolume(computeVideoVolumeFromScroll());
+        } else {
+          applyVolume(1.0);
+        }
       });
 
       video.addEventListener('play', function () {
-        updateVideoState();
+        if (audioUnlocked) {
+          applyVolume(computeVideoVolumeFromScroll());
+        }
       });
 
       attemptSoundAutoplay();
@@ -1256,7 +1293,7 @@
         lastScrollY = currentY;
         lastScrollTime = now;
 
-        updateVideoState();
+        scheduleSmoothVolume(computeVideoVolumeFromScroll());
       }
 
       window.addEventListener('wheel', handleWheel, { passive: false });
@@ -1265,7 +1302,7 @@
       window.addEventListener('touchend', handleTouchEnd, { passive: true });
       window.addEventListener('scroll', handleScroll, { passive: true });
       window.addEventListener('resize', function () {
-        updateVideoState();
+        scheduleSmoothVolume(computeVideoVolumeFromScroll());
       }, { passive: true });
     })();
 
@@ -1371,8 +1408,38 @@
         'slide14.png'
       ];
 
+      const destinationPool = [
+        'https://felrontraders.pages.dev/',
+        'https://hopebaptistcentre.com/',
+        'https://nmlhome.pages.dev/',
+        'https://palexdigital.github.io/vitalsip/',
+        'https://palexdigital.github.io/clean/',
+        'https://protea-care-medical.pages.dev/',
+        'https://justicemakwela.pages.dev/',
+        'https://josedconcept.pages.dev/',
+        'https://palexdigital.github.io/OCEAN-PERFUMES/',
+        'https://palexdigital.github.io/The-Nail-Technique/',
+        'https://palexdigital.github.io/DR.-SIFISO-NKOSI-Aesthetic-Clinic/',
+        'https://palexdigital.github.io/Maison-de-Luxe/',
+        'https://palexdigital.github.io/blocksourcing/',
+        'https://tgtdiscoverytalentsearch.pages.dev/'
+      ];
+
+      function shuffleArray(arr) {
+        const copy = arr.slice();
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = copy[i];
+          copy[i] = copy[j];
+          copy[j] = temp;
+        }
+        return copy;
+      }
+
+      const assignedUrls = shuffleArray(destinationPool).slice(0, imageFiles.length);
       const slideData = imageFiles.map((src, idx) => ({
         src,
+        href: assignedUrls[idx],
         index: idx
       }));
 
@@ -1434,8 +1501,12 @@
       }
 
       function buildSlideElement(item, copyNum) {
-        const itemEl = document.createElement('div');
-        itemEl.className = 'px-carousel-item';
+        const link = document.createElement('a');
+        link.className = 'px-carousel-item';
+        link.href = item.href;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.setAttribute('aria-label', 'Open ' + item.src + ' destination');
 
         const frame = document.createElement('span');
         frame.className = 'px-carousel-frame';
@@ -1453,8 +1524,8 @@
         });
 
         frame.appendChild(img);
-        itemEl.appendChild(frame);
-        return itemEl;
+        link.appendChild(frame);
+        return link;
       }
 
       function populateTrack() {
