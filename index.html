@@ -72,7 +72,6 @@
       transform: translate(-50%, -50%);
       display: block;
       pointer-events: none;
-      user-select: none;
     }
 
     .video-hero__scrim {
@@ -344,9 +343,6 @@
       justify-content: center;
       margin-top: 0;
       text-decoration: none;
-      pointer-events: none;
-      user-select: none;
-      cursor: default;
     }
 
     .px-carousel-frame {
@@ -359,8 +355,6 @@
       justify-content: center;
       flex-shrink: 0;
       transform: none;
-      pointer-events: none;
-      user-select: none;
     }
 
     .px-carousel-frame img {
@@ -370,9 +364,6 @@
       object-position: center;
       display: block;
       transform: none;
-      pointer-events: none;
-      user-select: none;
-      -webkit-user-drag: none;
     }
 
     .px-carousel-frame.px-unframed {
@@ -632,40 +623,6 @@
       fill: white;
     }
 
-    /* --- WhatsApp Floating Icon --- */
-    .whatsapp-float {
-      position: fixed;
-      right: 24px;
-      bottom: 24px;
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background-color: #25D366;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-      z-index: 998;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: translateY(10px);
-      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
-    }
-
-    .whatsapp-float.visible {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    .whatsapp-float svg path {
-      fill: #ffffff;
-    }
-
     /* --- Massive Brand Footer --- */
     footer {
       border-top: 1px solid #222;
@@ -837,7 +794,6 @@
       .px-carousel-frame { width: 66px; height: 66px; }
       .px-carousel-frame.px-unframed img { height: 66px; max-width: 120px; }
       .scroll-indicator { bottom: 24px; }
-      .whatsapp-float { right: 18px; bottom: 18px; width: 50px; height: 50px; }
     }
 
     @media (max-width: 480px) {
@@ -875,10 +831,8 @@
       class="video-hero__media"
       src="promo.mp4"
       autoplay
-      muted
-      playsinline
-      webkit-playsinline
       loop
+      playsinline
       preload="auto"
       disablePictureInPicture
     ></video>
@@ -1030,19 +984,6 @@
     </main>
   </div>
 
-  <a
-    href="https://wa.me/27627654746"
-    class="whatsapp-float"
-    id="whatsappFloat"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Chat on WhatsApp"
-  >
-    <svg viewBox="0 0 448 512" width="28" height="28" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path>
-    </svg>
-  </a>
-
   <footer>
     <div class="footer-brand">
       <h2>Digital Solutions That Help Businesses Stand Out.</h2>
@@ -1095,118 +1036,64 @@
 
       if (!video) return;
 
-      let retryTimer = null;
-      let retryCount = 0;
-      const maxRetries = 6;
-      const state = {
-        lastError: null,
-        autoplayBlocked: false
-      };
+      let audioUnlocked = false;
 
-      function applyAutoplayConfig() {
-        video.setAttribute('autoplay', '');
-        video.setAttribute('muted', '');
-        video.setAttribute('playsinline', '');
-        video.setAttribute('webkit-playsinline', '');
-        video.setAttribute('loop', '');
-        video.setAttribute('preload', 'auto');
-        video.muted = true;
-        video.defaultMuted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.controls = false;
+      function applyFullVolumeAudio() {
+        video.muted = false;
+        video.defaultMuted = false;
+        video.volume = 1.0;
       }
 
-      function scheduleRetry() {
-        if (retryTimer !== null || retryCount >= maxRetries) return;
-        retryCount += 1;
-        retryTimer = window.setTimeout(function () {
-          retryTimer = null;
-          attemptPlay();
-        }, 400);
+      function removeInteractionListeners() {
+        document.removeEventListener('pointerdown', handleFirstInteraction, true);
+        document.removeEventListener('touchstart', handleFirstInteraction, true);
+        document.removeEventListener('keydown', handleFirstInteraction, true);
+        document.removeEventListener('click', handleFirstInteraction, true);
       }
 
-      function attemptPlay() {
-        applyAutoplayConfig();
-        if (video.readyState === 0 && video.networkState === video.NETWORK_NO_SOURCE) {
-          video.load();
-        }
-        try {
-          const playPromise = video.play();
-          if (playPromise && typeof playPromise.then === 'function') {
-            playPromise.then(function () {
-              state.lastError = null;
-              state.autoplayBlocked = false;
-              retryCount = 0;
-            }).catch(function (err) {
-              state.lastError = err && err.message ? err.message : String(err || 'Playback rejected');
-              state.autoplayBlocked = true;
-              if (video.readyState < 2) {
-                scheduleRetry();
-              }
-            });
-          } else {
-            state.lastError = null;
-            state.autoplayBlocked = false;
-          }
-        } catch (err) {
-          state.lastError = err && err.message ? err.message : String(err || 'Playback error');
-          state.autoplayBlocked = true;
-          scheduleRetry();
-        }
-      }
-
-      function handleMediaReady() {
-        attemptPlay();
-      }
-
-      function handlePause() {
-        if (!video.ended && !document.hidden) {
-          scheduleRetry();
-        }
-      }
-
-      function handlePageShow() {
-        retryCount = 0;
-        attemptPlay();
-      }
-
-      function handleVisibilityChange() {
-        if (!document.hidden) {
-          retryCount = 0;
-          attemptPlay();
-        }
-      }
-
-      video.addEventListener('loadedmetadata', handleMediaReady);
-      video.addEventListener('loadeddata', handleMediaReady);
-      video.addEventListener('canplay', handleMediaReady);
-      video.addEventListener('pause', handlePause);
-      window.addEventListener('pageshow', handlePageShow);
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-
-      attemptPlay();
-    })();
-
-    (function initWhatsAppFloat() {
-      const waFloat = document.getElementById('whatsappFloat');
-      const videoHero = document.getElementById('videoHero');
-      if (!waFloat) return;
-
-      function updateVisibility() {
-        const heroBottom = videoHero
-          ? videoHero.getBoundingClientRect().bottom
-          : window.innerHeight;
-        if (heroBottom <= 0) {
-          waFloat.classList.add('visible');
+      function handleFirstInteraction() {
+        applyFullVolumeAudio();
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.then(function () {
+            audioUnlocked = true;
+            removeInteractionListeners();
+          }).catch(function () {
+            // Keep listeners active if playback is still rejected
+          });
         } else {
-          waFloat.classList.remove('visible');
+          audioUnlocked = true;
+          removeInteractionListeners();
         }
       }
 
-      updateVisibility();
-      window.addEventListener('scroll', updateVisibility, { passive: true });
-      window.addEventListener('resize', updateVisibility, { passive: true });
+      function attemptSoundAutoplay() {
+        applyFullVolumeAudio();
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+          playPromise.then(function () {
+            audioUnlocked = true;
+            removeInteractionListeners();
+          }).catch(function () {
+            document.addEventListener('pointerdown', handleFirstInteraction, { capture: true, passive: true });
+            document.addEventListener('touchstart', handleFirstInteraction, { capture: true, passive: true });
+            document.addEventListener('keydown', handleFirstInteraction, { capture: true });
+            document.addEventListener('click', handleFirstInteraction, { capture: true });
+          });
+        }
+      }
+
+      video.addEventListener('loadedmetadata', function () {
+        applyFullVolumeAudio();
+      });
+
+      video.addEventListener('play', function () {
+        if (audioUnlocked) {
+          applyFullVolumeAudio();
+        }
+      });
+
+      attemptSoundAutoplay();
     })();
 
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -1404,8 +1291,12 @@
       }
 
       function buildSlideElement(item, copyNum) {
-        const slideItem = document.createElement('div');
-        slideItem.className = 'px-carousel-item';
+        const link = document.createElement('a');
+        link.className = 'px-carousel-item';
+        link.href = item.href;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.setAttribute('aria-label', 'Open ' + item.src + ' destination');
 
         const frame = document.createElement('span');
         frame.className = 'px-carousel-frame';
@@ -1423,8 +1314,8 @@
         });
 
         frame.appendChild(img);
-        slideItem.appendChild(frame);
-        return slideItem;
+        link.appendChild(frame);
+        return link;
       }
 
       function populateTrack() {
