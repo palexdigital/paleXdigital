@@ -1194,7 +1194,7 @@
       video.controls = false;
 
       function startMutedFallback() {
-        if (hasFinishedOnce || !video.paused) return;
+        if (hasFinishedOnce || !video.paused || video.ended) return;
         video.muted = true;
         video.volume = 1;
         const mutedPromise = video.play();
@@ -1204,8 +1204,8 @@
       }
 
       function attemptPlaybackSequence() {
-        if (hasFinishedOnce || playbackAttemptInFlight) return;
-        if (!video.paused && !video.ended) return;
+        if (hasFinishedOnce || playbackAttemptInFlight || video.ended) return;
+        if (!video.paused) return;
 
         playbackAttemptInFlight = true;
         video.loop = false;
@@ -1235,7 +1235,7 @@
       });
 
       video.addEventListener('canplay', function () {
-        if (video.paused && !hasFinishedOnce) {
+        if (video.paused && !hasFinishedOnce && !video.ended) {
           attemptPlaybackSequence();
         }
       });
@@ -1262,7 +1262,7 @@
         window.addEventListener('DOMContentLoaded', attemptPlaybackSequence, { once: true });
       }
       window.addEventListener('load', function () {
-        if (video.paused && !hasFinishedOnce) {
+        if (video.paused && !hasFinishedOnce && !video.ended) {
           attemptPlaybackSequence();
         }
       }, { once: true });
