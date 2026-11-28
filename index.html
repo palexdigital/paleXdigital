@@ -876,8 +876,9 @@
       src="promo.mp4"
       autoplay
       muted
-      loop
       playsinline
+      webkit-playsinline
+      loop
       preload="auto"
       disablePictureInPicture
     ></video>
@@ -1094,35 +1095,97 @@
 
       if (!video) return;
 
-      function enforceMutedAutoplay() {
+      let retryTimer = null;
+      let retryCount = 0;
+      const maxRetries = 6;
+      const state = {
+        lastError: null,
+        autoplayBlocked: false
+      };
+
+      function applyAutoplayConfig() {
+        video.setAttribute('autoplay', '');
+        video.setAttribute('muted', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.setAttribute('loop', '');
+        video.setAttribute('preload', 'auto');
         video.muted = true;
         video.defaultMuted = true;
         video.loop = true;
         video.playsInline = true;
         video.controls = false;
-        const playPromise = video.play();
-        if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch(function () {
-            // Will retry on media/visibility events
-          });
+      }
+
+      function scheduleRetry() {
+        if (retryTimer !== null || retryCount >= maxRetries) return;
+        retryCount += 1;
+        retryTimer = window.setTimeout(function () {
+          retryTimer = null;
+          attemptPlay();
+        }, 400);
+      }
+
+      function attemptPlay() {
+        applyAutoplayConfig();
+        if (video.readyState === 0 && video.networkState === video.NETWORK_NO_SOURCE) {
+          video.load();
+        }
+        try {
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.then === 'function') {
+            playPromise.then(function () {
+              state.lastError = null;
+              state.autoplayBlocked = false;
+              retryCount = 0;
+            }).catch(function (err) {
+              state.lastError = err && err.message ? err.message : String(err || 'Playback rejected');
+              state.autoplayBlocked = true;
+              if (video.readyState < 2) {
+                scheduleRetry();
+              }
+            });
+          } else {
+            state.lastError = null;
+            state.autoplayBlocked = false;
+          }
+        } catch (err) {
+          state.lastError = err && err.message ? err.message : String(err || 'Playback error');
+          state.autoplayBlocked = true;
+          scheduleRetry();
         }
       }
 
-      enforceMutedAutoplay();
+      function handleMediaReady() {
+        attemptPlay();
+      }
 
-      video.addEventListener('loadedmetadata', enforceMutedAutoplay);
-      video.addEventListener('canplay', enforceMutedAutoplay);
-      video.addEventListener('pause', function () {
-        if (!video.ended) {
-          enforceMutedAutoplay();
+      function handlePause() {
+        if (!video.ended && !document.hidden) {
+          scheduleRetry();
         }
-      });
-      window.addEventListener('pageshow', enforceMutedAutoplay);
-      document.addEventListener('visibilitychange', function () {
+      }
+
+      function handlePageShow() {
+        retryCount = 0;
+        attemptPlay();
+      }
+
+      function handleVisibilityChange() {
         if (!document.hidden) {
-          enforceMutedAutoplay();
+          retryCount = 0;
+          attemptPlay();
         }
-      });
+      }
+
+      video.addEventListener('loadedmetadata', handleMediaReady);
+      video.addEventListener('loadeddata', handleMediaReady);
+      video.addEventListener('canplay', handleMediaReady);
+      video.addEventListener('pause', handlePause);
+      window.addEventListener('pageshow', handlePageShow);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+
+      attemptPlay();
     })();
 
     (function initWhatsAppFloat() {
